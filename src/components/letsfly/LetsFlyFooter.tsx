@@ -58,18 +58,18 @@ export default function LetsFlyFooter() {
 
       tl.fromTo(
         titleRef.current,
-        { opacity: 0, y: 35 },
+        { opacity: 0, y: 30 },
         { opacity: 1, y: 0, duration: 1.1, ease: "power3.out" }
       )
         .fromTo(
           copyBlockRef.current,
-          { opacity: 0, y: 25 },
+          { opacity: 0, y: 22 },
           { opacity: 1, y: 0, duration: 1.0, ease: "power3.out" },
           "-=0.75"
         )
         .fromTo(
           contactsRef.current ? contactsRef.current.children : [],
-          { opacity: 0, y: 20 },
+          { opacity: 0, y: 18 },
           { opacity: 1, y: 0, duration: 0.8, stagger: 0.15, ease: "power3.out" },
           "-=0.6"
         )
@@ -92,8 +92,7 @@ export default function LetsFlyFooter() {
       aria-label="Let's Fly e Contactos"
     >
       {/* ─────────────────────────────────────────────────────────────
-          ZERO OVERLAY: RAW NATURAL VIDEO BACKGROUND
-          Single-play on viewport arrival. NO loop. Stays on final frame.
+          VIDEO BACKGROUND — Single-play. NO loop. Stays on final frame.
       ─────────────────────────────────────────────────────────────── */}
       <div
         className="absolute inset-0 w-full h-full z-0 overflow-hidden pointer-events-none select-none"
@@ -109,58 +108,96 @@ export default function LetsFlyFooter() {
           <source src="/videos/letsfly.webm" type="video/webm" />
           <source src="/videos/letsfly.mp4" type="video/mp4" />
         </video>
+
+        {/* ─────────────────────────────────────────────────────────────
+            SUBTLE DARK OVERLAY
+            Improves text legibility without destroying the video atmosphere.
+            rgba(0,0,0,0.35) — light enough to keep the video clearly visible.
+        ─────────────────────────────────────────────────────────────── */}
+        <div
+          className="absolute inset-0 bg-black/35 pointer-events-none"
+          aria-hidden="true"
+        />
+        {/* Gradient fade at the very bottom for a soft page transition */}
+        <div
+          className="absolute bottom-0 left-0 right-0 h-40 bg-gradient-to-t from-background/60 to-transparent pointer-events-none"
+          aria-hidden="true"
+        />
       </div>
 
       {/* ─────────────────────────────────────────────────────────────
-          LET'S FLY CONTENT FLOATING DIRECTLY OVER THE VIDEO
+          LET'S FLY CONTENT
       ─────────────────────────────────────────────────────────────── */}
       <div className="relative z-10 w-full max-w-[1720px] mx-auto px-5 sm:px-8 md:px-12 lg:px-16 xl:px-20 flex-grow flex flex-col justify-center">
-        
-        {/* Massive Display Title */}
-        <div className="overflow-hidden">
-          <h2
-            ref={titleRef}
-            className="font-display font-black text-brand tracking-tight uppercase leading-[0.88] text-5xl sm:text-7xl md:text-8xl lg:text-[9rem] xl:text-[11rem] 2xl:text-[13rem] select-none will-change-transform"
-          >
-            LET&apos;S FLY
-          </h2>
-        </div>
 
-        {/* Contact Introductory Copy */}
+        {/* ─────────────────────────────────────────────────────────────
+            TITLE: LET'S / FLY — Two lines, cinematic presence.
+            Each word on its own line via block spans.
+        ─────────────────────────────────────────────────────────────── */}
+        <h2
+          ref={titleRef}
+          className="font-display font-black text-white tracking-tight uppercase
+            leading-[0.90]
+            select-none will-change-transform"
+          aria-label="Let's Fly"
+        >
+          <span className="block text-[clamp(4.5rem,15vw,14rem)]">LET&apos;S</span>
+          <span className="block text-[clamp(4.5rem,15vw,14rem)]">FLY</span>
+        </h2>
+
+        {/* ─────────────────────────────────────────────────────────────
+            CONTACT INTRODUCTORY COPY
+            Controlled max-width prevents single-line sprawl.
+        ─────────────────────────────────────────────────────────────── */}
         <div
           ref={copyBlockRef}
-          className="mt-8 sm:mt-12 lg:mt-16 max-w-2xl sm:max-w-3xl will-change-transform"
+          className="mt-10 sm:mt-14 lg:mt-16 max-w-xs sm:max-w-md lg:max-w-lg will-change-transform"
         >
-          <p className="font-body text-dark font-medium text-xl sm:text-2xl md:text-3xl lg:text-4xl leading-tight tracking-tight">
-            Tem uma ideia? Vamos transformar a ideia em algo real.
+          <p className="font-body text-white font-medium
+            text-xl sm:text-2xl md:text-3xl
+            leading-snug tracking-tight mb-3 sm:mb-4">
+            Tem uma ideia?
           </p>
-          <p className="font-body text-dark-muted text-sm sm:text-base md:text-lg lg:text-xl font-normal leading-relaxed mt-3 sm:mt-4">
-            Estamos disponíveis para novos projectos, ideias e colaborações.
+          <p className="font-body text-white/90 font-medium
+            text-lg sm:text-xl md:text-2xl
+            leading-snug tracking-tight mb-3 sm:mb-4">
+            Vamos transformar a ideia em algo real.
+          </p>
+          <p className="font-body text-white/70 font-normal
+            text-sm sm:text-base md:text-lg
+            leading-relaxed">
+            Estamos disponíveis para novos projectos,<br />
+            ideias e colaborações.
           </p>
         </div>
 
-        {/* Contact Links with Minimalist Lucide Icons */}
+        {/* ─────────────────────────────────────────────────────────────
+            CONTACT LINKS — EMAIL / WHATSAPP
+        ─────────────────────────────────────────────────────────────── */}
         <div
           ref={contactsRef}
-          className="mt-12 sm:mt-16 lg:mt-20 grid grid-cols-1 md:grid-cols-2 gap-8 sm:gap-12 lg:gap-16 max-w-4xl pt-8 sm:pt-12 border-t border-dark/15"
+          className="mt-12 sm:mt-16 lg:mt-20 grid grid-cols-1 md:grid-cols-2 gap-8 sm:gap-12 lg:gap-16 max-w-2xl pt-8 sm:pt-10 border-t border-white/20"
         >
-          {/* EMAIL Contact */}
+          {/* EMAIL */}
           <a
             href="mailto:zillionphp777@gmail.com"
             data-cursor-hover="true"
-            className="group flex flex-col items-start gap-2.5 focus:outline-none focus-visible:ring-2 focus-visible:ring-brand rounded-sm"
+            className="group flex flex-col items-start gap-2.5 focus:outline-none focus-visible:ring-2 focus-visible:ring-white rounded-sm"
             aria-label="Enviar email para zillionphp777@gmail.com"
           >
-            <div className="flex items-center gap-2 font-body text-xs sm:text-sm font-semibold tracking-widest text-brand uppercase">
-              <Mail className="w-4 h-4 flex-shrink-0" aria-hidden="true" />
-              <span>EMAIL</span>
+            <div className="flex items-center gap-2 font-body text-xs sm:text-sm font-semibold tracking-widest text-white/60 uppercase">
+              <Mail className="w-3.5 h-3.5 flex-shrink-0" aria-hidden="true" />
+              <span>Email</span>
             </div>
             <div className="flex items-center gap-3">
-              <span className="font-display font-bold text-lg sm:text-xl md:text-2xl lg:text-3xl text-dark tracking-tight transition-colors duration-200 group-hover:text-brand">
+              <span className="font-body font-semibold
+                text-base sm:text-lg md:text-xl lg:text-2xl
+                text-white tracking-tight
+                transition-colors duration-200 group-hover:text-brand">
                 zillionphp777@gmail.com
               </span>
               <span
-                className="inline-block text-brand text-lg sm:text-xl transform transition-transform duration-300 ease-out group-hover:translate-x-2"
+                className="inline-block text-white/60 text-base sm:text-lg transform transition-transform duration-300 ease-out group-hover:translate-x-2 group-hover:text-brand"
                 aria-hidden="true"
               >
                 →
@@ -168,25 +205,28 @@ export default function LetsFlyFooter() {
             </div>
           </a>
 
-          {/* WHATSAPP Contact */}
+          {/* WHATSAPP */}
           <a
             href="https://wa.me/258850244716"
             target="_blank"
             rel="noopener noreferrer"
             data-cursor-hover="true"
-            className="group flex flex-col items-start gap-2.5 focus:outline-none focus-visible:ring-2 focus-visible:ring-brand rounded-sm"
+            className="group flex flex-col items-start gap-2.5 focus:outline-none focus-visible:ring-2 focus-visible:ring-white rounded-sm"
             aria-label="Contactar no WhatsApp (+258 85 024 4716)"
           >
-            <div className="flex items-center gap-2 font-body text-xs sm:text-sm font-semibold tracking-widest text-brand uppercase">
-              <MessageCircle className="w-4 h-4 flex-shrink-0" aria-hidden="true" />
-              <span>WHATSAPP</span>
+            <div className="flex items-center gap-2 font-body text-xs sm:text-sm font-semibold tracking-widest text-white/60 uppercase">
+              <MessageCircle className="w-3.5 h-3.5 flex-shrink-0" aria-hidden="true" />
+              <span>WhatsApp</span>
             </div>
             <div className="flex items-center gap-3">
-              <span className="font-display font-bold text-lg sm:text-xl md:text-2xl lg:text-3xl text-dark tracking-tight transition-colors duration-200 group-hover:text-brand">
+              <span className="font-body font-semibold
+                text-base sm:text-lg md:text-xl lg:text-2xl
+                text-white tracking-tight
+                transition-colors duration-200 group-hover:text-brand">
                 +258 85 024 4716
               </span>
               <span
-                className="inline-block text-brand text-lg sm:text-xl transform transition-transform duration-300 ease-out group-hover:translate-x-2"
+                className="inline-block text-white/60 text-base sm:text-lg transform transition-transform duration-300 ease-out group-hover:translate-x-2 group-hover:text-brand"
                 aria-hidden="true"
               >
                 →
@@ -198,29 +238,34 @@ export default function LetsFlyFooter() {
       </div>
 
       {/* ─────────────────────────────────────────────────────────────
-          MINIMALIST FUNCTIONAL FOOTER
+          FOOTER — Mindstack · Design & Tecnologia · Instagram · WhatsApp · © 2026
       ─────────────────────────────────────────────────────────────── */}
       <footer
         ref={footerRef}
-        className="relative z-10 w-full max-w-[1720px] mx-auto px-5 sm:px-8 md:px-12 lg:px-16 xl:px-20 py-8 sm:py-10 border-t border-dark/10 mt-16 sm:mt-24 flex flex-col sm:flex-row items-center justify-between gap-6 font-body text-xs sm:text-sm text-dark-muted"
+        className="relative z-10 w-full max-w-[1720px] mx-auto px-5 sm:px-8 md:px-12 lg:px-16 xl:px-20
+          py-8 sm:py-10
+          border-t border-white/10
+          mt-16 sm:mt-24
+          flex flex-col sm:flex-row items-center justify-between gap-6
+          font-body text-xs sm:text-sm text-white/50"
         role="contentinfo"
       >
         {/* Left: Studio Identity */}
         <div className="flex items-center gap-2 text-center sm:text-left">
-          <span className="font-display font-bold text-dark tracking-tight">
+          <span className="font-display font-bold text-white/80 tracking-tight">
             MINDSTACK
           </span>
           <span>Design &amp; Tecnologia</span>
         </div>
 
-        {/* Center: Social / Contact Links */}
+        {/* Center: Social Links */}
         <div className="flex items-center gap-6 sm:gap-8">
           <a
             href="https://www.instagram.com/mind.stack258?stkn=bGFpd3c0eng4MnBl&utm_source=qr"
             target="_blank"
             rel="noopener noreferrer"
             data-cursor-hover="true"
-            className="hover:text-brand transition-colors duration-200 uppercase tracking-wider font-medium"
+            className="hover:text-white transition-colors duration-200 uppercase tracking-wider font-medium"
             aria-label="Perfil do Instagram da Mindstack (abre numa nova aba)"
           >
             Instagram
@@ -230,7 +275,7 @@ export default function LetsFlyFooter() {
             target="_blank"
             rel="noopener noreferrer"
             data-cursor-hover="true"
-            className="hover:text-brand transition-colors duration-200 uppercase tracking-wider font-medium"
+            className="hover:text-white transition-colors duration-200 uppercase tracking-wider font-medium"
             aria-label="WhatsApp da Mindstack (abre numa nova aba)"
           >
             WhatsApp
@@ -238,7 +283,7 @@ export default function LetsFlyFooter() {
         </div>
 
         {/* Right: Copyright */}
-        <div className="text-center sm:text-right text-dark-muted/70">
+        <div className="text-center sm:text-right text-white/35">
           <span>&copy; {new Date().getFullYear()} Mindstack</span>
         </div>
       </footer>
