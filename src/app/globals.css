@@ -1,4 +1,6 @@
-@import url('https://fonts.googleapis.com/css2?family=Boldonse&family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&display=swap');
+/* Boldonse loaded via Google Fonts (not available in next/font) */
+@import url('https://fonts.googleapis.com/css2?family=Boldonse&display=swap');
+/* DM Sans is loaded via next/font/google in layout.tsx — no @import needed */
 
 @tailwind base;
 @tailwind components;
@@ -11,8 +13,8 @@
   --color-orange-deep: #E14E15;
   --color-dark: #111215;
   --color-dark-muted: #4A4D57;
-  --font-boldonse: 'Boldonse', -apple-system, BlinkMacSystemFont, 'Impact', 'Arial Black', sans-serif;
-  --font-dm-sans: 'DM Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  --font-boldonse: 'Boldonse', 'Impact', 'Arial Black', sans-serif;
+  /* --font-dm-sans is injected by next/font as a CSS variable on <html> */
 }
 
 * {
