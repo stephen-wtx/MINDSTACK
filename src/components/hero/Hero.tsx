@@ -44,21 +44,21 @@ export default function Hero({ navRef }: HeroProps) {
       if (navRef?.current) {
         gsap.set(navRef.current, { opacity: 0, y: -16 });
       }
+      // Use opacity-only on lines to avoid clipping from translateY + overflow-hidden
       if (titleLine1Ref.current && titleLine2Ref.current) {
         gsap.set([titleLine1Ref.current, titleLine2Ref.current], {
           opacity: 0,
-          y: 24,
+          y: 18,
         });
       }
       if (textRef.current) {
-        gsap.set(textRef.current, { opacity: 0, y: 18 });
+        gsap.set(textRef.current, { opacity: 0, y: 16 });
       }
       if (ctaRef.current) {
-        gsap.set(ctaRef.current, { opacity: 0, y: 14 });
+        gsap.set(ctaRef.current, { opacity: 0, y: 12 });
       }
 
       // Sequenced Cinematic Animation Timeline
-      // 1. Full-screen video background fades in with subtle settling
       tl.to(
         videoBgRef.current,
         {
@@ -69,7 +69,6 @@ export default function Hero({ navRef }: HeroProps) {
         },
         0.1
       )
-        // 2. Navbar drops in gracefully
         .to(
           navRef?.current || {},
           {
@@ -79,7 +78,6 @@ export default function Hero({ navRef }: HeroProps) {
           },
           0.35
         )
-        // 3. Title reveals in sequence
         .to(
           titleLine1Ref.current,
           {
@@ -98,7 +96,6 @@ export default function Hero({ navRef }: HeroProps) {
           },
           0.75
         )
-        // 4. Body text slides in
         .to(
           textRef.current,
           {
@@ -108,7 +105,6 @@ export default function Hero({ navRef }: HeroProps) {
           },
           0.95
         )
-        // 5. CTA link completes sequence
         .to(
           ctaRef.current,
           {
@@ -127,7 +123,7 @@ export default function Hero({ navRef }: HeroProps) {
     <section
       ref={containerRef}
       id="inicio"
-      className="relative w-full h-[100svh] min-h-[580px] flex items-center overflow-hidden bg-background"
+      className="relative w-full h-[100svh] min-h-[600px] flex items-center overflow-hidden bg-background"
       aria-label="Hero Section"
     >
       {/* ─────────────────────────────────────────────────────────────
@@ -151,7 +147,7 @@ export default function Hero({ navRef }: HeroProps) {
           <source src="/videos/intro.mp4" type="video/mp4" />
         </video>
 
-        {/* Subtle Ambient Light Wash to ensure crisp text contrast on all devices */}
+        {/* Subtle Ambient Light Wash */}
         <div className="absolute inset-0 bg-gradient-to-r from-background/90 via-background/40 to-transparent lg:via-background/30 pointer-events-none" />
         <div className="absolute inset-0 bg-gradient-to-t from-background/80 via-transparent to-background/40 sm:hidden pointer-events-none" />
       </div>
@@ -161,21 +157,42 @@ export default function Hero({ navRef }: HeroProps) {
       ─────────────────────────────────────────────────────────────── */}
       <div className="relative z-10 w-full max-w-[1720px] mx-auto px-5 sm:px-8 md:px-12 lg:px-16 xl:px-20 pt-20 sm:pt-24 lg:pt-0">
         <div className="max-w-xl md:max-w-2xl lg:max-w-3xl flex flex-col justify-center text-left">
-          
-          {/* Main Display Headline */}
-          <h1 className="font-display font-black text-brand tracking-tight uppercase text-[2.75rem] leading-[0.92] xs:text-5xl sm:text-6xl md:text-7xl lg:text-[5.5rem] xl:text-[6.5rem] 2xl:text-[7.25rem] sm:leading-[0.88]">
-            <span className="block overflow-hidden">
+
+          {/* ─────────────────────────────────────────────────────────
+              MAIN HEADLINE — Anti-clipping solution:
+              - NO overflow-hidden on wrappers (causes clipping with translateY)
+              - Extra vertical padding on inner spans to protect ascenders/descenders
+              - line-height generous enough for Boldonse glyphs
+          ──────────────────────────────────────────────────────────── */}
+          <h1 className="font-display font-black text-brand tracking-tight uppercase">
+            {/*
+              Line 1: DESIGN &
+              The outer span is NOT overflow-hidden — this prevents any translateY
+              from clipping the glyphs. Instead we allow natural overflow with
+              generous padding and rely on opacity + subtle translateY for motion.
+            */}
+            <span className="block pb-1">
               <span
                 ref={titleLine1Ref}
-                className="inline-block will-change-transform"
+                className="block will-change-transform
+                  text-[clamp(2.5rem,8vw,7.5rem)]
+                  leading-[1.0]
+                  sm:leading-[0.96]
+                  lg:leading-[0.94]"
               >
-                DESIGN &
+                DESIGN &amp;
               </span>
             </span>
-            <span className="block overflow-hidden mt-1 sm:mt-2">
+
+            {/* Line 2: TECNOLOGIA */}
+            <span className="block pb-2">
               <span
                 ref={titleLine2Ref}
-                className="inline-block will-change-transform"
+                className="block will-change-transform
+                  text-[clamp(2.5rem,8vw,7.5rem)]
+                  leading-[1.0]
+                  sm:leading-[0.96]
+                  lg:leading-[0.94]"
               >
                 TECNOLOGIA
               </span>
@@ -183,7 +200,7 @@ export default function Hero({ navRef }: HeroProps) {
           </h1>
 
           {/* Descriptive Body Copy */}
-          <div className="overflow-hidden mt-5 sm:mt-7 md:mt-9 max-w-md sm:max-w-lg lg:max-w-xl">
+          <div className="mt-5 sm:mt-7 md:mt-9 max-w-md sm:max-w-lg lg:max-w-xl">
             <p
               ref={textRef}
               className="font-body text-dark/85 text-sm sm:text-base md:text-lg lg:text-xl font-normal leading-relaxed will-change-transform"
@@ -193,7 +210,7 @@ export default function Hero({ navRef }: HeroProps) {
           </div>
 
           {/* Interactive CTA */}
-          <div className="overflow-hidden mt-7 sm:mt-9 md:mt-11">
+          <div className="mt-7 sm:mt-9 md:mt-11">
             <a
               ref={ctaRef}
               href="#quem-somos"
