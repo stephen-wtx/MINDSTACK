@@ -68,7 +68,9 @@ export default function CustomCursor() {
       document.body.removeEventListener("mouseenter", onMouseEnter);
       document.body.removeEventListener("mouseleave", onMouseLeave);
     };
-  }, [isVisible]);
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
+  // Note: isVisible state intentionally excluded — event listeners should only
+  // be registered once. Visibility is tracked via the setter directly.
 
   return (
     <div

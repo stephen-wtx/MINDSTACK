@@ -26,7 +26,8 @@
 html {
   background-color: var(--bg-primary);
   color: var(--color-dark);
-  font-family: var(--font-dm-sans);
+  /* --font-dm-sans is injected by next/font on the <html> element */
+  font-family: var(--font-dm-sans), 'DM Sans', system-ui, sans-serif;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -58,7 +59,8 @@ body {
 }
 
 .font-body {
-  font-family: var(--font-dm-sans);
+  /* next/font injects --font-dm-sans on <html> */
+  font-family: var(--font-dm-sans), 'DM Sans', system-ui, sans-serif;
 }
 
 /* Smooth Focus Rings for Accessibility */
