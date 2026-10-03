@@ -1,54 +1,56 @@
 "use client";
 
-import React, { useState, useRef, useEffect } from "react";
+import React, { useRef, useEffect } from "react";
 import Link from "next/link";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 
-interface ServiceCategory {
-  id: "tech" | "design";
+/* ─────────────────────────────────────────────────────────────────────────
+   SERVICES DATA — Individual 5-item grid (editorial, não accordion)
+───────────────────────────────────────────────────────────────────────── */
+interface ServiceItem {
   number: string;
   title: string;
   description: string;
-  services: string[];
 }
 
-const SERVICES_DATA: ServiceCategory[] = [
+const SERVICES: ServiceItem[] = [
   {
-    id: "tech",
     number: "01",
-    title: "TECH",
+    title: "Desenvolvimento de Websites",
     description:
-      "Desenvolvemos soluções digitais funcionais, escaláveis e orientadas para os desafios específicos de cada negócio.",
-    services: [
-      "Desenvolvimento de Websites",
-      "Sistemas Web",
-      "Desenvolvimento de Apps",
-      "UI/UX Design",
-      "Integrações e Soluções Digitais",
-    ],
+      "Websites responsivos e personalizados, desenvolvidos para apresentar marcas, serviços e experiências digitais com clareza.",
   },
   {
-    id: "design",
     number: "02",
-    title: "DESIGN",
+    title: "Sistemas Web",
     description:
-      "Criamos identidades e conteúdos visuais consistentes, pensados para comunicar com clareza e fortalecer a presença das marcas.",
-    services: [
-      "Cartazes",
-      "Posters",
-      "Flyers",
-      "Banners",
-      "Edição de Imagens",
-      "Edição de Vídeo",
-      "Conteúdo Visual para Redes Sociais",
-    ],
+      "Plataformas web funcionais para optimizar processos, centralizar informação e responder às necessidades específicas de cada negócio.",
+  },
+  {
+    number: "03",
+    title: "Desenvolvimento de Apps",
+    description:
+      "Aplicações digitais pensadas para proporcionar experiências simples, funcionais e adaptadas aos seus utilizadores.",
+  },
+  {
+    number: "04",
+    title: "UI/UX Design",
+    description:
+      "Interfaces claras e experiências digitais estruturadas para equilibrar estética, usabilidade e consistência.",
+  },
+  {
+    number: "05",
+    title: "Integrações e Soluções Digitais",
+    description:
+      "Integração de ferramentas e tecnologias para criar fluxos digitais mais eficientes e conectados.",
   },
 ];
 
+/* ─────────────────────────────────────────────────────────────────────────
+   COMPONENT
+───────────────────────────────────────────────────────────────────────── */
 export default function AboutServices() {
-  const [activeCategory, setActiveCategory] = useState<"tech" | "design" | null>(null);
-
   const sectionRef = useRef<HTMLElement>(null);
   const videoRef = useRef<HTMLVideoElement>(null);
   const videoWrapperRef = useRef<HTMLDivElement>(null);
@@ -56,13 +58,9 @@ export default function AboutServices() {
   const textRef = useRef<HTMLParagraphElement>(null);
   const teamLinkRef = useRef<HTMLDivElement>(null);
   const titleServicosRef = useRef<HTMLHeadingElement>(null);
-  const accordionRef = useRef<HTMLDivElement>(null);
+  const servicesGridRef = useRef<HTMLDivElement>(null);
 
   const hasPlayedRef = useRef(false);
-
-  const toggleCategory = (id: "tech" | "design") => {
-    setActiveCategory((prev) => (prev === id ? null : id));
-  };
 
   useEffect(() => {
     gsap.registerPlugin(ScrollTrigger);
@@ -81,7 +79,7 @@ export default function AboutServices() {
             const playPromise = video.play();
             if (playPromise !== undefined) {
               playPromise.catch(() => {
-                // Autoplay policy fallback (handled silently without breaking)
+                // Autoplay policy fallback (handled silently)
               });
             }
           }
@@ -105,31 +103,31 @@ export default function AboutServices() {
       quemSomosTl
         .fromTo(
           videoWrapperRef.current,
-          { opacity: 0, scale: 0.95, y: 30 },
+          { opacity: 0, scale: 0.96, y: 24 },
           { opacity: 1, scale: 1, y: 0, duration: 1.4, ease: "power2.out" }
         )
         .fromTo(
           titleQuemSomosRef.current,
-          { opacity: 0, y: 28 },
+          { opacity: 0, y: 24 },
           { opacity: 1, y: 0, duration: 1.0, ease: "power3.out" },
           "-=1.0"
         )
         .fromTo(
           textRef.current,
-          { opacity: 0, y: 22 },
+          { opacity: 0, y: 18 },
           { opacity: 1, y: 0, duration: 1.0, ease: "power3.out" },
           "-=0.75"
         )
         .fromTo(
           teamLinkRef.current,
-          { opacity: 0, y: 16 },
+          { opacity: 0, y: 14 },
           { opacity: 1, y: 0, duration: 0.8, ease: "power3.out" },
           "-=0.6"
         );
 
       // Subtle atmospheric parallax for the video element
       gsap.to(videoWrapperRef.current, {
-        y: -40,
+        y: -36,
         ease: "none",
         scrollTrigger: {
           trigger: sectionRef.current,
@@ -139,11 +137,11 @@ export default function AboutServices() {
         },
       });
 
-      // 2. Nossos Serviços Entrance Timeline
+      // 2. Nossos Serviços Entrance
       const servicosTl = gsap.timeline({
         scrollTrigger: {
           trigger: titleServicosRef.current,
-          start: "top 80%",
+          start: "top 82%",
           toggleActions: "play none none none",
         },
       });
@@ -151,17 +149,17 @@ export default function AboutServices() {
       servicosTl
         .fromTo(
           titleServicosRef.current,
-          { opacity: 0, y: 28 },
+          { opacity: 0, y: 24 },
           { opacity: 1, y: 0, duration: 1.0, ease: "power3.out" }
         )
         .fromTo(
-          accordionRef.current ? accordionRef.current.children : [],
+          servicesGridRef.current ? servicesGridRef.current.children : [],
           { opacity: 0, y: 20 },
           {
             opacity: 1,
             y: 0,
-            duration: 0.8,
-            stagger: 0.15,
+            duration: 0.75,
+            stagger: 0.1,
             ease: "power3.out",
           },
           "-=0.6"
@@ -179,56 +177,71 @@ export default function AboutServices() {
       aria-label="Quem Somos e Nossos Serviços"
     >
       <div className="relative z-10 w-full max-w-[1720px] mx-auto px-5 sm:px-8 md:px-12 lg:px-16 xl:px-20">
-        
+
         {/* ─────────────────────────────────────────────────────────────
             PARTE 1: QUEM SOMOS? (COMPOSIÇÃO ASSIMÉTRICA VÍDEO + TEXTO)
         ─────────────────────────────────────────────────────────────── */}
-        <div className="relative mb-28 sm:mb-36 lg:mb-52">
-          
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-14 xl:gap-20 items-center">
-            
-            {/* Left Column: Atmospheric 3D Video (Increased size, seamless transparent background) */}
-            <div className="lg:col-span-6 xl:col-span-6 flex items-center justify-center lg:justify-start order-1">
+        <div className="relative mb-32 sm:mb-40 lg:mb-56">
+
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 xl:gap-20 items-center">
+
+            {/* Left Column: Video — transparent background via mix-blend-multiply
+                Works correctly because our background is light (#F7F7F6).
+                If mindstacki.webm has alpha, mix-blend-multiply still works cleanly.
+                Video is deliberately slightly larger for more compositional presence. */}
+            <div className="lg:col-span-6 xl:col-span-5 flex items-center justify-center lg:justify-start order-1">
               <div
                 ref={videoWrapperRef}
-                className="relative w-full max-w-[380px] sm:max-w-[480px] md:max-w-[560px] lg:max-w-[660px] xl:max-w-[760px] 2xl:max-w-[820px] aspect-square flex items-center justify-center pointer-events-none select-none will-change-transform lg:-ml-8 xl:-ml-12"
+                className="relative w-full
+                  max-w-[340px] sm:max-w-[460px] md:max-w-[560px]
+                  lg:max-w-[640px] xl:max-w-[720px] 2xl:max-w-[800px]
+                  aspect-square flex items-center justify-center
+                  pointer-events-none select-none will-change-transform
+                  lg:-ml-6 xl:-ml-10"
               >
-                {/* 
-                  mindstacki.webm: Single-play on viewport entry with seamless background removal (mix-blend-multiply).
-                  NO loop attribute. Stays on final frame once completed.
+                {/*
+                  mindstacki.webm: single-play on viewport entry.
+                  mix-blend-multiply removes the white/light background from the video,
+                  making the animation appear to float over the page background.
+                  NO loop. Stays on final frame once completed.
                 */}
                 <video
                   ref={videoRef}
                   muted
                   playsInline
                   preload="auto"
-                  className="w-full h-full object-contain mix-blend-multiply filter contrast-[1.02] bg-transparent"
+                  className="w-full h-full object-contain mix-blend-multiply bg-transparent"
                   aria-label="Mindstack 3D Character Reveal Animation"
                 >
                   <source src="/videos/mindstacki.webm" type="video/webm" />
                   <source src="/videos/mindstack.webm" type="video/webm" />
-                  <source src="/videos/introo.webm" type="video/webm" />
-                  <source src="/videos/mindstacki.mp4" type="video/mp4" />
+                  <source src="/videos/mindstacki.MP4" type="video/mp4" />
+                  <source src="/videos/mindstack.mp4" type="video/mp4" />
                 </video>
               </div>
             </div>
 
             {/* Right Column: Editorial Typography + Team Link */}
-            <div className="lg:col-span-6 xl:col-span-6 flex flex-col justify-center text-left order-2 lg:pl-4 xl:pl-8">
-              
+            <div className="lg:col-span-6 xl:col-span-7 flex flex-col justify-center text-left order-2 lg:pl-6 xl:pl-10">
+
               {/* Section Headline */}
               <h2
                 ref={titleQuemSomosRef}
-                className="font-display font-black text-brand tracking-tight uppercase text-4xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl mb-6 sm:mb-8 lg:mb-10 text-left will-change-transform"
+                className="font-display font-black text-brand tracking-tight uppercase will-change-transform
+                  text-[clamp(2.75rem,6vw,6.5rem)]
+                  leading-[0.96]
+                  mb-8 sm:mb-10 lg:mb-12"
               >
                 QUEM SOMOS?
               </h2>
 
-              {/* Exact Primary Copy */}
+              {/* Primary Copy — breathing room between lines */}
               <div className="max-w-xl lg:max-w-2xl">
                 <p
                   ref={textRef}
-                  className="font-body text-dark/85 text-base sm:text-lg md:text-xl lg:text-2xl font-normal leading-relaxed will-change-transform"
+                  className="font-body text-dark/80 font-normal leading-[1.75]
+                    text-base sm:text-lg md:text-xl lg:text-[1.25rem]
+                    will-change-transform"
                 >
                   Somos um grupo de jovens criativos que, em apenas um ano no mercado,
                   tem transformado desafios em soluções simples, directas e eficazes.
@@ -238,8 +251,8 @@ export default function AboutServices() {
                 </p>
               </div>
 
-              {/* Refined "Nossa Team →" Link */}
-              <div ref={teamLinkRef} className="mt-8 sm:mt-10 lg:mt-12 will-change-transform">
+              {/* Nossa Team → Link */}
+              <div ref={teamLinkRef} className="mt-10 sm:mt-12 lg:mt-14 will-change-transform">
                 <Link
                   href="/team.html"
                   data-cursor-hover="true"
@@ -248,11 +261,8 @@ export default function AboutServices() {
                 >
                   <span className="relative py-1">
                     Nossa Team
-                    {/* Minimalist animated underline */}
                     <span className="absolute bottom-0 left-0 w-full h-[1.5px] sm:h-[2px] bg-brand origin-left scale-x-0 group-hover:scale-x-100 transition-transform duration-300 ease-out" />
                   </span>
-
-                  {/* Micro-interaction Arrow */}
                   <span
                     className="inline-block font-sans text-lg sm:text-xl transform transition-transform duration-300 ease-out group-hover:translate-x-2"
                     aria-hidden="true"
@@ -265,119 +275,75 @@ export default function AboutServices() {
             </div>
 
           </div>
-
         </div>
 
         {/* ─────────────────────────────────────────────────────────────
-            PARTE 2: NOSSOS SERVIÇOS (COLLAPSIBLE / ACCORDION COM NUMERAÇÃO)
+            PARTE 2: NOSSOS SERVIÇOS — EDITORIAL 2-COLUMN GRID
+            Desktop: 2 cols · Mobile: 1 col
+            No accordion. Each service has number + title + description.
         ─────────────────────────────────────────────────────────────── */}
         <div id="servicos" className="pt-16 sm:pt-24 border-t border-dark/10">
-          
+
           {/* Section Headline */}
           <h2
             ref={titleServicosRef}
-            className="font-display font-black text-brand tracking-tight uppercase text-4xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl mb-12 sm:mb-16 lg:mb-20 text-left will-change-transform"
+            className="font-display font-black text-brand tracking-tight uppercase will-change-transform
+              text-[clamp(2.75rem,6vw,6.5rem)]
+              leading-[0.96]
+              mb-14 sm:mb-20 lg:mb-24"
           >
             NOSSOS SERVIÇOS
           </h2>
 
-          {/* Minimalist Editorial Accordion */}
-          <div ref={accordionRef} className="w-full max-w-5xl flex flex-col">
-            {SERVICES_DATA.map((category) => {
-              const isOpen = activeCategory === category.id;
+          {/* Services Grid — editorial 2 columns */}
+          <div
+            ref={servicesGridRef}
+            className="grid grid-cols-1 md:grid-cols-2 gap-0"
+          >
+            {SERVICES.map((service, index) => {
+              const isLastOdd = index === SERVICES.length - 1 && SERVICES.length % 2 !== 0;
 
               return (
                 <div
-                  key={category.id}
-                  className="border-b border-dark/15 transition-colors duration-300"
+                  key={service.number}
+                  className={`
+                    group relative
+                    border-t border-dark/10
+                    py-10 sm:py-12 lg:py-14
+                    ${index % 2 === 0 ? "md:pr-12 lg:pr-16 xl:pr-20" : "md:pl-12 lg:pl-16 xl:pl-20 md:border-l md:border-dark/10"}
+                    ${isLastOdd ? "md:col-span-2 md:border-r-0 md:max-w-[50%]" : ""}
+                    transition-colors duration-200
+                  `}
                 >
-                  {/* Category Header Bar */}
-                  <button
-                    type="button"
-                    onClick={() => toggleCategory(category.id)}
-                    aria-expanded={isOpen}
-                    aria-controls={`services-${category.id}`}
-                    data-cursor-hover="true"
-                    className="w-full py-7 sm:py-9 md:py-11 flex items-center justify-between text-left group focus:outline-none focus-visible:ring-2 focus-visible:ring-brand rounded-sm transition-colors duration-200"
-                  >
-                    <div className="flex items-baseline gap-4 sm:gap-6 md:gap-8">
-                      {/* Category Number */}
-                      <span className="font-body text-xs sm:text-sm md:text-base font-semibold tracking-widest text-brand/80 uppercase">
-                        {category.number}
-                      </span>
-                      {/* Category Title */}
-                      <span className="font-display font-black text-2xl sm:text-3xl md:text-4xl lg:text-5xl text-dark tracking-tight uppercase transition-colors duration-200 group-hover:text-brand">
-                        {category.title}
-                      </span>
-                    </div>
-
-                    {/* Minimalist Custom + / − Toggle Indicator */}
-                    <span
-                      className="relative w-7 h-7 sm:w-8 sm:h-8 flex items-center justify-center text-dark/70 group-hover:text-brand transition-colors duration-200"
-                      aria-hidden="true"
-                    >
-                      {/* Horizontal Bar */}
-                      <span className="absolute w-5 sm:w-6 h-[2px] bg-current rounded-full transition-transform duration-300" />
-                      {/* Vertical Bar (Rotates/scales out on open) */}
-                      <span
-                        className={`absolute w-5 sm:w-6 h-[2px] bg-current rounded-full transition-all duration-300 ease-in-out ${
-                          isOpen ? "rotate-90 scale-0 opacity-0" : "rotate-90 scale-100 opacity-100"
-                        }`}
-                      />
+                  {/* Number + Title row */}
+                  <div className="flex items-start gap-5 sm:gap-7 mb-4 sm:mb-5">
+                    {/* Discrete number */}
+                    <span className="font-body text-xs font-semibold tracking-widest text-brand/70 uppercase mt-1 flex-shrink-0 w-6">
+                      {service.number}
                     </span>
-                  </button>
 
-                  {/* Animated Collapsible Content */}
-                  <div
-                    id={`services-${category.id}`}
-                    className={`grid transition-all duration-500 ease-in-out overflow-hidden ${
-                      isOpen
-                        ? "grid-rows-[1fr] opacity-100 pb-10 sm:pb-12"
-                        : "grid-rows-[0fr] opacity-0 pb-0"
-                    }`}
-                  >
-                    <div className="overflow-hidden pl-7 sm:pl-10 md:pl-14">
-                      
-                      {/* Short Category Description */}
-                      <p className="font-body text-dark-muted text-sm sm:text-base md:text-lg font-normal leading-relaxed max-w-2xl mb-8 sm:mb-10">
-                        {category.description}
-                      </p>
-
-                      {/* Numbered Services List */}
-                      <ul className="flex flex-col space-y-3.5 sm:space-y-4">
-                        {category.services.map((service, index) => {
-                          const itemNumber = String(index + 1).padStart(2, "0");
-
-                          return (
-                            <li
-                              key={service}
-                              className={`flex items-baseline gap-4 sm:gap-6 font-body text-dark/85 text-base sm:text-lg md:text-xl lg:text-2xl font-normal leading-relaxed transition-all duration-300 ease-out ${
-                                isOpen
-                                  ? "translate-y-0 opacity-100"
-                                  : "translate-y-2 opacity-0"
-                              }`}
-                              style={{
-                                transitionDelay: isOpen ? `${index * 45 + 50}ms` : "0ms",
-                              }}
-                            >
-                              {/* Discrete Numbering */}
-                              <span className="font-body text-xs sm:text-sm font-medium text-dark-muted/60 tracking-wider">
-                                {itemNumber}
-                              </span>
-                              {/* Service Name */}
-                              <span className="hover:text-brand transition-colors duration-200">
-                                {service}
-                              </span>
-                            </li>
-                          );
-                        })}
-                      </ul>
-
-                    </div>
+                    {/* Service title */}
+                    <h3 className="font-body font-semibold text-dark tracking-tight
+                      text-lg sm:text-xl md:text-2xl lg:text-[1.5rem]
+                      leading-snug
+                      group-hover:text-brand transition-colors duration-200">
+                      {service.title}
+                    </h3>
                   </div>
+
+                  {/* Description — offset to align with title */}
+                  <p className="font-body text-dark-muted font-normal leading-relaxed
+                    text-sm sm:text-base
+                    pl-[2.75rem] sm:pl-[3.25rem]
+                    max-w-md">
+                    {service.description}
+                  </p>
                 </div>
               );
             })}
+
+            {/* Bottom border line across both columns */}
+            <div className="col-span-1 md:col-span-2 border-t border-dark/10" />
           </div>
 
         </div>
