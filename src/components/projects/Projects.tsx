@@ -25,7 +25,7 @@ const PROJECTS_DATA: ProjectItem[] = [
     description:
       "Uma plataforma para descobrir e explorar sites úteis, organizados por diferentes categorias e interesses.",
     link: "https://orbitta-11.vercel.app/",
-    image: "/images/orbitta-11.png",
+    image: "/images/tech/orbitta-11.png",
     gridClass: "lg:col-span-7",
     aspectRatio: "aspect-[16/10] sm:aspect-[16/10] lg:aspect-[16/11]",
   },
@@ -37,7 +37,7 @@ const PROJECTS_DATA: ProjectItem[] = [
     description:
       "Um poster criado para divulgar um evento de debate online, com uma comunicação simples, clara e objetiva.",
     link: "https://tak-away.vercel.app",
-    image: "/images/debate.jpeg",
+    image: "/images/design/debate.jpeg",
     gridClass: "lg:col-span-5",
     aspectRatio: "aspect-[16/10] sm:aspect-[4/3] lg:aspect-[16/11]",
   },
@@ -49,7 +49,7 @@ const PROJECTS_DATA: ProjectItem[] = [
     description:
       "Um poster promocional criado para apresentar uma página de venda de contas de streaming de forma simples e visualmente atrativa.",
     link: "https://sweet-world.onrender.com",
-    image: "/images/shopsync-poster.jpg",
+    image: "/images/design/shopsync-poster.jpg",
     gridClass: "lg:col-span-5",
     aspectRatio: "aspect-[16/10] sm:aspect-[4/3] lg:aspect-[1/1]",
   },
@@ -61,7 +61,7 @@ const PROJECTS_DATA: ProjectItem[] = [
     description:
       "Uma plataforma que conecta clientes a profissionais, tornando mais fácil encontrar e contratar serviços.",
     link: "https://talenthub-26tl.onrender.com",
-    image: "/images/talent-hub.png",
+    image: "/images/tech/talent-hub.png",
     gridClass: "lg:col-span-7",
     aspectRatio: "aspect-[16/10] sm:aspect-[16/10] lg:aspect-[16/10]",
   },
@@ -73,7 +73,7 @@ const PROJECTS_DATA: ProjectItem[] = [
     description:
       "Um marketplace feito para estudantes comprarem, venderem, trocarem ou doarem materiais de forma simples.",
     link: "https://cs-psi-five.vercel.app/",
-    image: "/images/campustore.png",
+    image: "/images/tech/campustore.png",
     gridClass: "lg:col-span-12",
     aspectRatio: "aspect-[16/10] sm:aspect-[16/9] lg:aspect-[21/9] xl:aspect-[2.4/1]",
   },
@@ -248,7 +248,7 @@ export default function Projects() {
           className="mt-16 sm:mt-24 lg:mt-32 flex justify-start sm:justify-end"
         >
           <Link
-            href="/projects.html"
+            href="/projects"
             data-cursor-hover="true"
             className="group inline-flex items-center gap-3 font-body text-base sm:text-lg md:text-xl font-semibold tracking-wider uppercase text-brand transition-all duration-300 focus:outline-none focus-visible:ring-2 focus-visible:ring-brand rounded-sm py-2"
             aria-label="Ver todos os projectos"

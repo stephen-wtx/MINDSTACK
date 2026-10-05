@@ -3,6 +3,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import Image from "next/image";
 import Link from "next/link";
+import { usePathname, useRouter } from "next/navigation";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 
@@ -24,15 +25,28 @@ const MENU_ITEMS: MenuItem[] = [
 ];
 
 export default function Navbar({ navRef }: NavbarProps) {
-  const [activeId, setActiveId] = useState<string>("inicio");
+  const pathname = usePathname();
+  const router = useRouter();
+  const isProjectsPage = pathname === "/projects";
+
+  const [activeId, setActiveId] = useState<string>(isProjectsPage ? "projectos" : "inicio");
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   const menuContainerRef = useRef<HTMLDivElement>(null);
   const indicatorRef = useRef<HTMLSpanElement>(null);
   const itemRefs = useRef<{ [key: string]: HTMLAnchorElement | null }>({});
 
-  // 1. Scroll Spy using ScrollTrigger & IntersectionObserver
+  // Synchronize activeId if route changes
   useEffect(() => {
+    if (isProjectsPage) {
+      setActiveId("projectos");
+    }
+  }, [isProjectsPage]);
+
+  // 1. Scroll Spy using ScrollTrigger on home page
+  useEffect(() => {
+    if (isProjectsPage) return;
+
     gsap.registerPlugin(ScrollTrigger);
 
     const sectionIds = ["inicio", "quem-somos", "projectos", "lets-work", "lets-fly"];
@@ -58,7 +72,7 @@ export default function Navbar({ navRef }: NavbarProps) {
     return () => {
       triggers.forEach((st) => st.kill());
     };
-  }, []);
+  }, [isProjectsPage]);
 
   // 2. Smooth Sliding Active Indicator on Desktop
   useEffect(() => {
@@ -94,9 +108,23 @@ export default function Navbar({ navRef }: NavbarProps) {
     };
   }, [mobileMenuOpen]);
 
-  const handleLinkClick = (e: React.MouseEvent<HTMLAnchorElement>, href: string) => {
+  const handleLinkClick = (e: React.MouseEvent<HTMLAnchorElement>, item: MenuItem) => {
     setMobileMenuOpen(false);
-    const targetId = href.replace("#", "");
+
+    if (isProjectsPage) {
+      if (item.id === "projectos") {
+        e.preventDefault();
+        window.scrollTo({ top: 0, behavior: "smooth" });
+        return;
+      }
+      // Navigate back to home section
+      e.preventDefault();
+      router.push(`/${item.href}`);
+      return;
+    }
+
+    // Home page behavior
+    const targetId = item.href.replace("#", "");
     const targetEl =
       document.getElementById(targetId) ||
       (targetId === "lets-fly" ? document.getElementById("lets-work") : null) ||
@@ -113,6 +141,23 @@ export default function Navbar({ navRef }: NavbarProps) {
     }
   };
 
+  const handleLogoClick = (e: React.MouseEvent<HTMLAnchorElement>) => {
+    setMobileMenuOpen(false);
+    if (isProjectsPage) {
+      e.preventDefault();
+      router.push("/");
+    } else {
+      e.preventDefault();
+      const lenis = (window as any)?.__lenis;
+      const targetEl = document.getElementById("inicio");
+      if (lenis && targetEl) {
+        lenis.scrollTo(targetEl, { duration: 1.2, offset: 0 });
+      } else {
+        window.scrollTo({ top: 0, behavior: "smooth" });
+      }
+    }
+  };
+
   return (
     <header
       ref={navRef}
@@ -125,8 +170,8 @@ export default function Navbar({ navRef }: NavbarProps) {
       >
         {/* Left: Brand Logo */}
         <Link
-          href="#inicio"
-          onClick={(e) => handleLinkClick(e, "#inicio")}
+          href="/"
+          onClick={handleLogoClick}
           className="flex items-center gap-2.5 sm:gap-3.5 group focus:outline-none focus-visible:ring-2 focus-visible:ring-brand rounded-sm z-50"
           aria-label="MindStack - Página Inicial"
         >
@@ -160,7 +205,7 @@ export default function Navbar({ navRef }: NavbarProps) {
                   itemRefs.current[item.id] = el;
                 }}
                 href={item.href}
-                onClick={(e) => handleLinkClick(e, item.href)}
+                onClick={(e) => handleLinkClick(e, item)}
                 data-cursor-hover="true"
                 className={`relative py-1 font-body text-xs lg:text-sm font-medium tracking-widest uppercase transition-colors duration-200 ${
                   isActive
@@ -225,7 +270,7 @@ export default function Navbar({ navRef }: NavbarProps) {
               <a
                 key={item.id}
                 href={item.href}
-                onClick={(e) => handleLinkClick(e, item.href)}
+                onClick={(e) => handleLinkClick(e, item)}
                 className={`font-display text-3xl sm:text-4xl uppercase tracking-tight flex items-center justify-between transition-all duration-300 ${
                   isActive
                     ? "text-brand font-black"
