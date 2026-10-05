@@ -254,9 +254,6 @@ export default function AboutServices() {
                   aria-label="Mindstack 3D Character Reveal Animation"
                 >
                   <source src="/videos/mindstacki.webm" type="video/webm" />
-                  <source src="/videos/mindstack.webm" type="video/webm" />
-                  <source src="/videos/mindstacki.MP4" type="video/mp4" />
-                  <source src="/videos/mindstack.mp4" type="video/mp4" />
                 </video>
               </div>
             </div>

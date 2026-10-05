@@ -36,7 +36,7 @@ const PROJECTS_DATA: ProjectItem[] = [
     title: "Debate Club",
     description:
       "Um poster criado para divulgar um evento de debate online, com uma comunicação simples, clara e objetiva.",
-    link: "https://tak-away.vercel.app",
+    link: "",
     image: "/images/design/debate.jpeg",
     gridClass: "lg:col-span-5",
     aspectRatio: "aspect-[16/10] sm:aspect-[4/3] lg:aspect-[16/11]",
@@ -48,7 +48,7 @@ const PROJECTS_DATA: ProjectItem[] = [
     title: "Shop Sync",
     description:
       "Um poster promocional criado para apresentar uma página de venda de contas de streaming de forma simples e visualmente atrativa.",
-    link: "https://sweet-world.onrender.com",
+    link: "",
     image: "/images/design/shopsync-poster.jpg",
     gridClass: "lg:col-span-5",
     aspectRatio: "aspect-[16/10] sm:aspect-[4/3] lg:aspect-[1/1]",
@@ -187,57 +187,65 @@ export default function Projects() {
           ref={galleryRef}
           className="grid grid-cols-1 lg:grid-cols-12 gap-6 sm:gap-8 lg:gap-10 xl:gap-12"
         >
-          {PROJECTS_DATA.map((project) => (
-            <a
-              key={project.id}
-              href={project.link}
-              target="_blank"
-              rel="noopener noreferrer"
-              data-cursor-hover="true"
-              className={`project-item group relative block w-full overflow-hidden rounded-xl bg-dark/5 will-change-transform ${project.gridClass} ${project.aspectRatio} focus:outline-none focus-visible:ring-2 focus-visible:ring-brand`}
-              // className={`project-item group relative block w-full overflow-hidden bg-dark/5 will-change-transform ${project.gridClass} ${project.aspectRatio} focus:outline-none focus-visible:ring-2 focus-visible:ring-brand`}
-              aria-label={`Ver projecto ${project.title} (abre numa nova aba)`}
-            >
-              {/* Project Image with Subtle Scale on Hover */}
-              <Image
-                src={project.image}
-                alt={`Screenshot do projecto ${project.title}`}
-                fill
-                sizes="(max-width: 768px) 100vw, (max-width: 1280px) 50vw, 60vw"
-                className="object-cover object-top transition-transform duration-700 ease-out group-hover:scale-[1.035]"
-              />
+          {PROJECTS_DATA.map((project) => {
+            const isExternal = Boolean(project.link);
+            const targetHref = isExternal ? project.link : "/projects";
 
-              {/* Minimal Top-Right Index Tag */}
-              <div className="absolute top-4 right-4 sm:top-6 sm:right-6 z-20 px-2.5 py-1 bg-dark/60 backdrop-blur-md rounded-sm text-white/90 font-body text-xs tracking-widest uppercase pointer-events-none transition-opacity duration-300">
-                {project.number}
-              </div>
+            return (
+              <Link
+                key={project.id}
+                href={targetHref}
+                target={isExternal ? "_blank" : undefined}
+                rel={isExternal ? "noopener noreferrer" : undefined}
+                data-cursor-hover="true"
+                className={`project-item group relative block w-full overflow-hidden rounded-xl bg-dark/5 will-change-transform ${project.gridClass} ${project.aspectRatio} focus:outline-none focus-visible:ring-2 focus-visible:ring-brand`}
+                aria-label={
+                  isExternal
+                    ? `Ver projecto ${project.title} (abre numa nova aba)`
+                    : `Ver projecto ${project.title} na página de Projectos`
+                }
+              >
+                {/* Project Image with Subtle Scale on Hover */}
+                <Image
+                  src={project.image}
+                  alt={`Screenshot do projecto ${project.title}`}
+                  fill
+                  sizes="(max-width: 768px) 100vw, (max-width: 1280px) 50vw, 60vw"
+                  className="object-cover object-top transition-transform duration-700 ease-out group-hover:scale-[1.035]"
+                />
 
-              {/* Cinematic Editorial Hover / Touch Overlay */}
-              <div className="absolute inset-0 z-10 bg-gradient-to-t from-dark/95 via-dark/40 to-transparent opacity-90 sm:opacity-0 sm:group-hover:opacity-100 transition-opacity duration-500 ease-out flex flex-col justify-end p-6 sm:p-8 md:p-10 lg:p-12 pointer-events-none">
-                
-                {/* Title and Arrow */}
-                <div className="flex items-center justify-between gap-4 transform translate-y-0 sm:translate-y-2 sm:group-hover:translate-y-0 transition-transform duration-500 ease-out">
-                  <h3 className="font-display font-black text-xl sm:text-2xl md:text-[1.75rem] leading-[1.2] text-white tracking-tight uppercase">
-                    {project.title}
-                  </h3>
-
-                  {/* External Link Arrow Indicator */}
-                  <span
-                    className="w-8 h-8 sm:w-10 sm:h-10 rounded-full border border-white/30 flex items-center justify-center text-white text-base sm:text-lg transform translate-x-0 sm:-translate-x-1 sm:group-hover:translate-x-0 sm:group-hover:border-brand sm:group-hover:bg-brand transition-all duration-300"
-                    aria-hidden="true"
-                  >
-                    ↗
-                  </span>
+                {/* Minimal Top-Right Index Tag */}
+                <div className="absolute top-4 right-4 sm:top-6 sm:right-6 z-20 px-2.5 py-1 bg-dark/60 backdrop-blur-md rounded-sm text-white/90 font-body text-xs tracking-widest uppercase pointer-events-none transition-opacity duration-300">
+                  {project.number}
                 </div>
 
-                {/* Description */}
-                <p className="font-body text-white/80 text-xs sm:text-sm md:text-base font-normal leading-relaxed max-w-xl mt-2.5 sm:mt-3 transform translate-y-0 sm:translate-y-2 sm:group-hover:translate-y-0 transition-transform duration-500 ease-out delay-75">
-                  {project.description}
-                </p>
+                {/* Cinematic Editorial Hover / Touch Overlay */}
+                <div className="absolute inset-0 z-10 bg-gradient-to-t from-dark/95 via-dark/40 to-transparent opacity-90 sm:opacity-0 sm:group-hover:opacity-100 transition-opacity duration-500 ease-out flex flex-col justify-end p-6 sm:p-8 md:p-10 lg:p-12 pointer-events-none">
+                  
+                  {/* Title and Arrow */}
+                  <div className="flex items-center justify-between gap-4 transform translate-y-0 sm:translate-y-2 sm:group-hover:translate-y-0 transition-transform duration-500 ease-out">
+                    <h3 className="font-display font-black text-xl sm:text-2xl md:text-[1.75rem] leading-[1.2] text-white tracking-tight uppercase">
+                      {project.title}
+                    </h3>
 
-              </div>
-            </a>
-          ))}
+                    {/* Link Arrow Indicator */}
+                    <span
+                      className="w-8 h-8 sm:w-10 sm:h-10 rounded-full border border-white/30 flex items-center justify-center text-white text-base sm:text-lg transform translate-x-0 sm:-translate-x-1 sm:group-hover:translate-x-0 sm:group-hover:border-brand sm:group-hover:bg-brand transition-all duration-300"
+                      aria-hidden="true"
+                    >
+                      {isExternal ? "↗" : "→"}
+                    </span>
+                  </div>
+
+                  {/* Description */}
+                  <p className="font-body text-white/80 text-xs sm:text-sm md:text-base font-normal leading-relaxed max-w-xl mt-2.5 sm:mt-3 transform translate-y-0 sm:translate-y-2 sm:group-hover:translate-y-0 transition-transform duration-500 ease-out delay-75">
+                    {project.description}
+                  </p>
+
+                </div>
+              </Link>
+            );
+          })}
         </div>
 
         {/* ─────────────────────────────────────────────────────────────

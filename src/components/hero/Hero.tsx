@@ -160,7 +160,6 @@ export default function Hero({ navRef }: HeroProps) {
           className="w-full h-full object-cover object-center sm:object-[60%_center] lg:object-[68%_center] xl:object-[65%_center] filter contrast-[1.01]"
         >
           <source src="/videos/intro.webm" type="video/webm" />
-          <source src="/videos/intro.mp4" type="video/mp4" />
         </video>
 
         {/* Subtle Ambient Light Wash */}

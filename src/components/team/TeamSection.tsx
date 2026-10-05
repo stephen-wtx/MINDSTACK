@@ -30,7 +30,7 @@ const TEAM_MEMBERS: TeamMember[] = [
     role: "Frontend e Designer Gráfico",
     description:
       "“Einstein” da equipa, actua no desenvolvimento frontend e no design gráfico, assegurando uma comunicação visual consistente e uma experiência de utilização clara em cada projecto.",
-    image: "/images/team/steph.png",
+    image: "/images/team/steph.jpeg",
     objectPosition: "object-center",
   },
   {

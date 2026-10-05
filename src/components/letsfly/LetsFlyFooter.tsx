@@ -108,7 +108,6 @@ export default function LetsFlyFooter() {
           className="w-full h-full object-cover object-center sm:object-[center_35%] lg:object-[65%_center]"
         >
           <source src="/videos/letsfly.webm" type="video/webm" />
-          <source src="/videos/letsfly.mp4" type="video/mp4" />
         </video>
 
         {/* ─────────────────────────────────────────────────────────────
