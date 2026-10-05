@@ -294,7 +294,7 @@ export default function AboutServices() {
               {/* Nossa Team → Link */}
               <div ref={teamLinkRef} className="mt-10 sm:mt-12 lg:mt-14 will-change-transform">
                 <Link
-                  href="/team.html"
+                  href="/team"
                   data-cursor-hover="true"
                   className="group inline-flex items-center gap-3 font-body text-base sm:text-lg font-medium tracking-wide text-brand transition-all duration-300 focus:outline-none focus-visible:ring-2 focus-visible:ring-brand rounded-sm"
                   aria-label="Conhecer a Nossa Team"

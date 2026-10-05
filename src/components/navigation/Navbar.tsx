@@ -28,8 +28,16 @@ export default function Navbar({ navRef }: NavbarProps) {
   const pathname = usePathname();
   const router = useRouter();
   const isProjectsPage = pathname === "/projects";
+  const isTeamPage = pathname === "/team";
+  const isSubPage = isProjectsPage || isTeamPage;
 
-  const [activeId, setActiveId] = useState<string>(isProjectsPage ? "projectos" : "inicio");
+  const getInitialActiveId = () => {
+    if (isProjectsPage) return "projectos";
+    if (isTeamPage) return "quem-somos";
+    return "inicio";
+  };
+
+  const [activeId, setActiveId] = useState<string>(getInitialActiveId());
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   const menuContainerRef = useRef<HTMLDivElement>(null);
@@ -40,12 +48,14 @@ export default function Navbar({ navRef }: NavbarProps) {
   useEffect(() => {
     if (isProjectsPage) {
       setActiveId("projectos");
+    } else if (isTeamPage) {
+      setActiveId("quem-somos");
     }
-  }, [isProjectsPage]);
+  }, [isProjectsPage, isTeamPage]);
 
   // 1. Scroll Spy using ScrollTrigger on home page
   useEffect(() => {
-    if (isProjectsPage) return;
+    if (isSubPage) return;
 
     gsap.registerPlugin(ScrollTrigger);
 
@@ -72,7 +82,7 @@ export default function Navbar({ navRef }: NavbarProps) {
     return () => {
       triggers.forEach((st) => st.kill());
     };
-  }, [isProjectsPage]);
+  }, [isSubPage]);
 
   // 2. Smooth Sliding Active Indicator on Desktop
   useEffect(() => {
@@ -111,12 +121,17 @@ export default function Navbar({ navRef }: NavbarProps) {
   const handleLinkClick = (e: React.MouseEvent<HTMLAnchorElement>, item: MenuItem) => {
     setMobileMenuOpen(false);
 
-    if (isProjectsPage) {
+    if (isSubPage) {
       if (item.id === "projectos") {
         e.preventDefault();
-        window.scrollTo({ top: 0, behavior: "smooth" });
+        if (isProjectsPage) {
+          window.scrollTo({ top: 0, behavior: "smooth" });
+        } else {
+          router.push("/projects");
+        }
         return;
       }
+
       // Navigate back to home section
       e.preventDefault();
       router.push(`/${item.href}`);
