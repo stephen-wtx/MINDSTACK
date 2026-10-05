@@ -52,7 +52,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="pt" className={`${dmSans.variable}`}>
-      <body className="font-sans bg-background text-dark antialiased selection:bg-brand selection:text-white min-h-screen">
+      <body className="bg-background text-dark antialiased selection:bg-brand selection:text-white min-h-screen">
         <SmoothScrollProvider>
           <CustomCursor />
           {children}
