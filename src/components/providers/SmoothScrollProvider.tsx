@@ -32,6 +32,9 @@ export default function SmoothScrollProvider({
     });
 
     lenisRef.current = lenis;
+    if (typeof window !== "undefined") {
+      (window as any).__lenis = lenis;
+    }
 
     // Connect Lenis to ScrollTrigger
     lenis.on("scroll", ScrollTrigger.update);
@@ -47,6 +50,9 @@ export default function SmoothScrollProvider({
       gsap.ticker.remove(tickerCb);
       lenis.destroy();
       lenisRef.current = null;
+      if (typeof window !== "undefined") {
+        delete (window as any).__lenis;
+      }
     };
   }, []);
 

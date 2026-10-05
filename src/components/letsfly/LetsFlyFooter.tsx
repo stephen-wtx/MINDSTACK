@@ -87,10 +87,12 @@ export default function LetsFlyFooter() {
   return (
     <section
       ref={containerRef}
-      id="lets-fly"
+      id="lets-work"
       className="relative w-full min-h-[100svh] bg-background flex flex-col justify-between overflow-hidden border-t border-dark/10 pt-24 sm:pt-32 lg:pt-40"
-      aria-label="Let's Fly e Contactos"
+      aria-label="Let's Work e Contactos"
     >
+      {/* Anchor for backward compatibility with #lets-fly */}
+      <div id="lets-fly" className="absolute top-0 left-0 pointer-events-none" />
       {/* ─────────────────────────────────────────────────────────────
           VIDEO BACKGROUND — Single-play. NO loop. Stays on final frame.
       ─────────────────────────────────────────────────────────────── */}
@@ -134,16 +136,16 @@ export default function LetsFlyFooter() {
             TITLE: LET'S / FLY — Two lines, cinematic presence.
             Each word on its own line via block spans.
         ─────────────────────────────────────────────────────────────── */}
-        <h2
-          ref={titleRef}
-          className="font-display font-black text-white tracking-tight uppercase
-            leading-[0.90]
-            select-none will-change-transform"
-          aria-label="Let's Fly"
-        >
-          <span className="block text-[clamp(4.5rem,15vw,14rem)]">LET&apos;S</span>
-          <span className="block text-[clamp(4.5rem,15vw,14rem)]">FLY</span>
-        </h2>
+      <h2
+        ref={titleRef}
+        className="font-display font-black text-brand tracking-tight uppercase
+          select-none will-change-transform whitespace-nowrap
+          text-[clamp(2.5rem,6.5vw,5.5rem)]"
+        aria-label="Let's Fly"
+      >
+        LET&apos;S FLY
+      </h2>
+
 
         {/* ─────────────────────────────────────────────────────────────
             CONTACT INTRODUCTORY COPY
@@ -151,7 +153,7 @@ export default function LetsFlyFooter() {
         ─────────────────────────────────────────────────────────────── */}
         <div
           ref={copyBlockRef}
-          className="mt-10 sm:mt-14 lg:mt-16 max-w-xs sm:max-w-md lg:max-w-lg will-change-transform"
+          className="mt-8 sm:mt-10 lg:mt-12 max-w-xs sm:max-w-md lg:max-w-lg will-change-transform"
         >
           <p className="font-body text-white font-medium
             text-xl sm:text-2xl md:text-3xl
@@ -207,12 +209,12 @@ export default function LetsFlyFooter() {
 
           {/* WHATSAPP */}
           <a
-            href="https://wa.me/258850244716"
+            href="https://wa.me/258834577714"
             target="_blank"
             rel="noopener noreferrer"
             data-cursor-hover="true"
             className="group flex flex-col items-start gap-2.5 focus:outline-none focus-visible:ring-2 focus-visible:ring-white rounded-sm"
-            aria-label="Contactar no WhatsApp (+258 85 024 4716)"
+            aria-label="Contactar no WhatsApp (+258 83 457 7714)"
           >
             <div className="flex items-center gap-2 font-body text-xs sm:text-sm font-semibold tracking-widest text-white/60 uppercase">
               <MessageCircle className="w-3.5 h-3.5 flex-shrink-0" aria-hidden="true" />
@@ -223,7 +225,7 @@ export default function LetsFlyFooter() {
                 text-base sm:text-lg md:text-xl lg:text-2xl
                 text-white tracking-tight
                 transition-colors duration-200 group-hover:text-brand">
-                +258 85 024 4716
+                +258 83 457 7714
               </span>
               <span
                 className="inline-block text-white/60 text-base sm:text-lg transform transition-transform duration-300 ease-out group-hover:translate-x-2 group-hover:text-brand"
@@ -271,7 +273,7 @@ export default function LetsFlyFooter() {
             Instagram
           </a>
           <a
-            href="https://wa.me/258850244716"
+            href="https://wa.me/258834577714"
             target="_blank"
             rel="noopener noreferrer"
             data-cursor-hover="true"

@@ -1,12 +1,14 @@
 "use client";
 
-import React, { useRef, useEffect } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import Link from "next/link";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 
 /* ─────────────────────────────────────────────────────────────────────────
-   SERVICES DATA — Individual 5-item grid (editorial, não accordion)
+   SERVICES DATA
+   Estrutura das duas categorias da master, enriquecidas com as descrições
+   individuais desenvolvidas nesta branch.
 ───────────────────────────────────────────────────────────────────────── */
 interface ServiceItem {
   number: string;
@@ -14,36 +16,77 @@ interface ServiceItem {
   description: string;
 }
 
-const SERVICES: ServiceItem[] = [
+interface ServiceCategory {
+  id: "tech" | "design";
+  title: string;
+  description: string;
+  services: ServiceItem[];
+}
+
+const SERVICES_DATA: ServiceCategory[] = [
   {
-    number: "01",
-    title: "Desenvolvimento de Websites",
+    id: "tech",
+    title: "TECNOLOGIA",
     description:
-      "Websites responsivos e personalizados, desenvolvidos para apresentar marcas, serviços e experiências digitais com clareza.",
+      "Desenvolvemos soluções digitais funcionais, escaláveis e orientadas para os desafios específicos de cada negócio.",
+    services: [
+      {
+        number: "01",
+        title: "Desenvolvimento de Websites",
+        description:
+          "Websites responsivos e personalizados, desenvolvidos para apresentar marcas, serviços e experiências digitais com clareza.",
+      },
+      {
+        number: "02",
+        title: "Sistemas Web",
+        description:
+          "Plataformas web funcionais para optimizar processos, centralizar informação e responder às necessidades específicas de cada negócio.",
+      },
+      {
+        number: "03",
+        title: "Desenvolvimento de Apps",
+        description:
+          "Aplicações digitais pensadas para proporcionar experiências simples, funcionais e adaptadas aos seus utilizadores.",
+      },
+      {
+        number: "04",
+        title: "Integrações e Soluções Digitais",
+        description:
+          "Integração de ferramentas e tecnologias para criar fluxos digitais mais eficientes e conectados.",
+      },
+    ],
   },
   {
-    number: "02",
-    title: "Sistemas Web",
+    id: "design",
+    title: "DESIGN",
     description:
-      "Plataformas web funcionais para optimizar processos, centralizar informação e responder às necessidades específicas de cada negócio.",
-  },
-  {
-    number: "03",
-    title: "Desenvolvimento de Apps",
-    description:
-      "Aplicações digitais pensadas para proporcionar experiências simples, funcionais e adaptadas aos seus utilizadores.",
-  },
-  {
-    number: "04",
-    title: "UI/UX Design",
-    description:
-      "Interfaces claras e experiências digitais estruturadas para equilibrar estética, usabilidade e consistência.",
-  },
-  {
-    number: "05",
-    title: "Integrações e Soluções Digitais",
-    description:
-      "Integração de ferramentas e tecnologias para criar fluxos digitais mais eficientes e conectados.",
+      "Criamos identidades e conteúdos visuais consistentes, pensados para comunicar com clareza e fortalecer a presença das marcas.",
+    services: [
+      {
+        number: "01",
+        title: "UI/UX Design",
+        description:
+          "Interfaces claras e experiências digitais estruturadas para equilibrar estética, usabilidade e consistência.",
+      },
+      {
+        number: "02",
+        title: "Cartazes e Flyers",
+        description:
+          "Materiais impressos e digitais de comunicação visual, desenvolvidos para atrair atenção e transmitir mensagens com impacto.",
+      },
+      {
+        number: "03",
+        title: "Banners e Conteúdo Visual",
+        description:
+          "Conteúdo visual para plataformas digitais e redes sociais, criado para fortalecer a identidade e aumentar o alcance das marcas.",
+      },
+      {
+        number: "04",
+        title: "Edição de Imagem e Vídeo",
+        description:
+          "Pós-produção de imagem e vídeo para campanhas, redes sociais e apresentações, com foco em qualidade e consistência visual.",
+      },
+    ],
   },
 ];
 
@@ -51,6 +94,8 @@ const SERVICES: ServiceItem[] = [
    COMPONENT
 ───────────────────────────────────────────────────────────────────────── */
 export default function AboutServices() {
+  const [openCategory, setOpenCategory] = useState<"tech" | "design" | null>(null);
+
   const sectionRef = useRef<HTMLElement>(null);
   const videoRef = useRef<HTMLVideoElement>(null);
   const videoWrapperRef = useRef<HTMLDivElement>(null);
@@ -58,9 +103,13 @@ export default function AboutServices() {
   const textRef = useRef<HTMLParagraphElement>(null);
   const teamLinkRef = useRef<HTMLDivElement>(null);
   const titleServicosRef = useRef<HTMLHeadingElement>(null);
-  const servicesGridRef = useRef<HTMLDivElement>(null);
+  const accordionRef = useRef<HTMLDivElement>(null);
 
   const hasPlayedRef = useRef(false);
+
+  const toggleCategory = (id: "tech" | "design") => {
+    setOpenCategory((prev) => (prev === id ? null : id));
+  };
 
   useEffect(() => {
     gsap.registerPlugin(ScrollTrigger);
@@ -153,13 +202,13 @@ export default function AboutServices() {
           { opacity: 1, y: 0, duration: 1.0, ease: "power3.out" }
         )
         .fromTo(
-          servicesGridRef.current ? servicesGridRef.current.children : [],
+          accordionRef.current ? accordionRef.current.children : [],
           { opacity: 0, y: 20 },
           {
             opacity: 1,
             y: 0,
-            duration: 0.75,
-            stagger: 0.1,
+            duration: 0.7,
+            stagger: 0.12,
             ease: "power3.out",
           },
           "-=0.6"
@@ -185,10 +234,7 @@ export default function AboutServices() {
 
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 xl:gap-20 items-center">
 
-            {/* Left Column: Video — transparent background via mix-blend-multiply
-                Works correctly because our background is light (#F7F7F6).
-                If mindstacki.webm has alpha, mix-blend-multiply still works cleanly.
-                Video is deliberately slightly larger for more compositional presence. */}
+            {/* Left Column: Video — transparent background via mix-blend-multiply */}
             <div className="lg:col-span-6 xl:col-span-5 flex items-center justify-center lg:justify-start order-1">
               <div
                 ref={videoWrapperRef}
@@ -199,12 +245,6 @@ export default function AboutServices() {
                   pointer-events-none select-none will-change-transform
                   lg:-ml-6 xl:-ml-10"
               >
-                {/*
-                  mindstacki.webm: single-play on viewport entry.
-                  mix-blend-multiply removes the white/light background from the video,
-                  making the animation appear to float over the page background.
-                  NO loop. Stays on final frame once completed.
-                */}
                 <video
                   ref={videoRef}
                   muted
@@ -228,19 +268,19 @@ export default function AboutServices() {
               <h2
                 ref={titleQuemSomosRef}
                 className="font-display font-black text-brand tracking-tight uppercase will-change-transform
-                  text-[clamp(2.75rem,6vw,6.5rem)]
-                  leading-[0.96]
-                  mb-8 sm:mb-10 lg:mb-12"
+                  text-[clamp(2rem,4.5vw,3.75rem)]
+                  leading-[1.12] sm:leading-[1.10]
+                  mb-6 sm:mb-8 lg:mb-10"
               >
                 QUEM SOMOS?
               </h2>
 
-              {/* Primary Copy — breathing room between lines */}
+              {/* Primary Copy */}
               <div className="max-w-xl lg:max-w-2xl">
                 <p
                   ref={textRef}
                   className="font-body text-dark/80 font-normal leading-[1.75]
-                    text-base sm:text-lg md:text-xl lg:text-[1.25rem]
+                    text-base sm:text-lg md:text-xl lg:text-[1.2rem]
                     will-change-transform"
                 >
                   Somos um grupo de jovens criativos que, em apenas um ano no mercado,
@@ -256,7 +296,7 @@ export default function AboutServices() {
                 <Link
                   href="/team.html"
                   data-cursor-hover="true"
-                  className="group inline-flex items-center gap-3 font-body text-base sm:text-lg md:text-xl font-medium tracking-wide text-brand transition-all duration-300 focus:outline-none focus-visible:ring-2 focus-visible:ring-brand rounded-sm"
+                  className="group inline-flex items-center gap-3 font-body text-base sm:text-lg font-medium tracking-wide text-brand transition-all duration-300 focus:outline-none focus-visible:ring-2 focus-visible:ring-brand rounded-sm"
                   aria-label="Conhecer a Nossa Team"
                 >
                   <span className="relative py-1">
@@ -264,7 +304,7 @@ export default function AboutServices() {
                     <span className="absolute bottom-0 left-0 w-full h-[1.5px] sm:h-[2px] bg-brand origin-left scale-x-0 group-hover:scale-x-100 transition-transform duration-300 ease-out" />
                   </span>
                   <span
-                    className="inline-block font-sans text-lg sm:text-xl transform transition-transform duration-300 ease-out group-hover:translate-x-2"
+                    className="inline-block text-lg transition-transform duration-300 ease-out group-hover:translate-x-2"
                     aria-hidden="true"
                   >
                     →
@@ -278,9 +318,8 @@ export default function AboutServices() {
         </div>
 
         {/* ─────────────────────────────────────────────────────────────
-            PARTE 2: NOSSOS SERVIÇOS — EDITORIAL 2-COLUMN GRID
-            Desktop: 2 cols · Mobile: 1 col
-            No accordion. Each service has number + title + description.
+            PARTE 2: NOSSOS SERVIÇOS — ACCORDION TECNOLOGIA / DESIGN
+            Fechado por default. Cada categoria é independente.
         ─────────────────────────────────────────────────────────────── */}
         <div id="servicos" className="pt-16 sm:pt-24 border-t border-dark/10">
 
@@ -288,62 +327,132 @@ export default function AboutServices() {
           <h2
             ref={titleServicosRef}
             className="font-display font-black text-brand tracking-tight uppercase will-change-transform
-              text-[clamp(2.75rem,6vw,6.5rem)]
-              leading-[0.96]
-              mb-14 sm:mb-20 lg:mb-24"
+              text-[clamp(2rem,4.5vw,3.75rem)]
+              leading-[1.12] sm:leading-[1.10]
+              mb-8 sm:mb-12 lg:mb-14"
           >
             NOSSOS SERVIÇOS
           </h2>
 
-          {/* Services Grid — editorial 2 columns */}
-          <div
-            ref={servicesGridRef}
-            className="grid grid-cols-1 md:grid-cols-2 gap-0"
-          >
-            {SERVICES.map((service, index) => {
-              const isLastOdd = index === SERVICES.length - 1 && SERVICES.length % 2 !== 0;
+          {/* Accordion — TECNOLOGIA + DESIGN */}
+          <div ref={accordionRef} className="w-full flex flex-col">
+            {SERVICES_DATA.map((category) => {
+              const isOpen = openCategory === category.id;
 
               return (
                 <div
-                  key={service.number}
-                  className={`
-                    group relative
-                    border-t border-dark/10
-                    py-10 sm:py-12 lg:py-14
-                    ${index % 2 === 0 ? "md:pr-12 lg:pr-16 xl:pr-20" : "md:pl-12 lg:pl-16 xl:pl-20 md:border-l md:border-dark/10"}
-                    ${isLastOdd ? "md:col-span-2 md:border-r-0 md:max-w-[50%]" : ""}
-                    transition-colors duration-200
-                  `}
+                  key={category.id}
+                  className="border-b border-dark/12"
                 >
-                  {/* Number + Title row */}
-                  <div className="flex items-start gap-5 sm:gap-7 mb-4 sm:mb-5">
-                    {/* Discrete number */}
-                    <span className="font-body text-xs font-semibold tracking-widest text-brand/70 uppercase mt-1 flex-shrink-0 w-6">
-                      {service.number}
+                  {/* ── Category Header / Toggle Button ── */}
+                  <button
+                    type="button"
+                    onClick={() => toggleCategory(category.id)}
+                    aria-expanded={isOpen}
+                    aria-controls={`accordion-${category.id}`}
+                    data-cursor-hover="true"
+                    className="w-full py-7 sm:py-9 md:py-10 flex items-center justify-between text-left group focus:outline-none focus-visible:ring-2 focus-visible:ring-brand rounded-sm transition-colors duration-200"
+                  >
+                    {/* Category Title */}
+                    <span
+                      className={`font-display font-black tracking-tight uppercase
+                        text-xl sm:text-2xl md:text-3xl lg:text-[2.25rem]
+                        leading-[1.18] sm:leading-[1.14]
+                        transition-colors duration-200
+                        ${isOpen ? "text-brand" : "text-dark group-hover:text-brand"}`}
+                    >
+                      {category.title}
                     </span>
 
-                    {/* Service title */}
-                    <h3 className="font-body font-semibold text-dark tracking-tight
-                      text-lg sm:text-xl md:text-2xl lg:text-[1.5rem]
-                      leading-snug
-                      group-hover:text-brand transition-colors duration-200">
-                      {service.title}
-                    </h3>
-                  </div>
+                    {/* + / − Toggle Icon */}
+                    <span
+                      className={`relative w-8 h-8 flex-shrink-0 flex items-center justify-center transition-colors duration-200 ${isOpen ? "text-brand" : "text-dark/50 group-hover:text-brand"}`}
+                      aria-hidden="true"
+                    >
+                      {/* Horizontal bar — always visible */}
+                      <span className="absolute w-5 h-[1.5px] bg-current rounded-full" />
+                      {/* Vertical bar — hidden when open */}
+                      <span
+                        className={`absolute w-5 h-[1.5px] bg-current rounded-full rotate-90 transition-all duration-300 ease-in-out ${
+                          isOpen ? "scale-0 opacity-0" : "scale-100 opacity-100"
+                        }`}
+                      />
+                    </span>
+                  </button>
 
-                  {/* Description — offset to align with title */}
-                  <p className="font-body text-dark-muted font-normal leading-relaxed
-                    text-sm sm:text-base
-                    pl-[2.75rem] sm:pl-[3.25rem]
-                    max-w-md">
-                    {service.description}
-                  </p>
+                  {/* ── Animated Collapsible Content ── */}
+                  <div
+                    id={`accordion-${category.id}`}
+                    role="region"
+                    className={`grid transition-all duration-500 ease-in-out overflow-hidden ${
+                      isOpen
+                        ? "grid-rows-[1fr] opacity-100"
+                        : "grid-rows-[0fr] opacity-0"
+                    }`}
+                  >
+                    <div className="overflow-hidden">
+                      {/* Category description */}
+                      <p className="font-body text-dark-muted text-sm sm:text-base font-normal leading-relaxed max-w-2xl mb-10 sm:mb-12">
+                        {category.description}
+                      </p>
+
+                      {/* Services — 2 columns on desktop, 1 on mobile */}
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-0 mb-10 sm:mb-14">
+                        {category.services.map((service, index) => (
+                          <div
+                            key={service.number}
+                            className={`
+                              group/item relative
+                              border-t border-dark/10
+                              py-8 sm:py-10
+                              ${index % 2 === 0
+                                ? "md:pr-10 lg:pr-14"
+                                : "md:pl-10 lg:pl-14 md:border-l md:border-dark/10"}
+                              ${isOpen ? "opacity-100 translate-y-0" : "opacity-0 translate-y-2"}
+                              transition-all duration-300 ease-out
+                            `}
+                            style={{
+                              transitionDelay: isOpen ? `${index * 55 + 60}ms` : "0ms",
+                            }}
+                          >
+                            {/* Number + Title */}
+                            <div className="flex items-start gap-5 sm:gap-6 mb-3 sm:mb-4">
+                              {/* Discrete number */}
+                              <span className="font-body text-xs font-semibold tracking-widest text-brand/60 uppercase mt-[3px] flex-shrink-0 w-5">
+                                {service.number}
+                              </span>
+
+                              {/* Service title */}
+                              <h3 className="font-body font-semibold text-dark tracking-tight
+                                text-lg sm:text-xl
+                                leading-snug
+                                group-hover/item:text-brand transition-colors duration-200">
+                                {service.title}
+                              </h3>
+                            </div>
+
+                            {/* Description */}
+                            <p className="font-body text-dark-muted font-normal leading-relaxed
+                              text-sm
+                              pl-[2.5rem] sm:pl-[2.75rem]
+                              max-w-sm">
+                              {service.description}
+                            </p>
+                          </div>
+                        ))}
+
+                        {/* Bottom border if odd number of services */}
+                        {category.services.length % 2 !== 0 && (
+                          <div className="border-t border-dark/10" />
+                        )}
+                        {/* Full-width bottom border */}
+                        <div className={`col-span-1 md:col-span-2 border-t border-dark/10 ${category.services.length % 2 !== 0 ? "hidden md:block" : ""}`} />
+                      </div>
+                    </div>
+                  </div>
                 </div>
               );
             })}
-
-            {/* Bottom border line across both columns */}
-            <div className="col-span-1 md:col-span-2 border-t border-dark/10" />
           </div>
 
         </div>

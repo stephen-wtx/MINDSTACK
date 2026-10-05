@@ -20,7 +20,7 @@ const MENU_ITEMS: MenuItem[] = [
   { id: "inicio", label: "INÍCIO", href: "#inicio" },
   { id: "quem-somos", label: "QUEM SOMOS?", href: "#quem-somos" },
   { id: "projectos", label: "PROJECTOS", href: "#projectos" },
-  { id: "lets-fly", label: "LET'S FLY", href: "#lets-fly" },
+  { id: "lets-fly", label: "LET'S FLY", href: "#lets-work" },
 ];
 
 export default function Navbar({ navRef }: NavbarProps) {
@@ -35,7 +35,7 @@ export default function Navbar({ navRef }: NavbarProps) {
   useEffect(() => {
     gsap.registerPlugin(ScrollTrigger);
 
-    const sectionIds = ["inicio", "quem-somos", "projectos", "lets-fly"];
+    const sectionIds = ["inicio", "quem-somos", "projectos", "lets-work", "lets-fly"];
     const triggers: ScrollTrigger[] = [];
 
     sectionIds.forEach((id) => {
@@ -48,7 +48,7 @@ export default function Navbar({ navRef }: NavbarProps) {
         end: "bottom 45%",
         onToggle: (self) => {
           if (self.isActive) {
-            setActiveId(id);
+            setActiveId(id === "lets-work" ? "lets-fly" : id);
           }
         },
       });
@@ -97,11 +97,19 @@ export default function Navbar({ navRef }: NavbarProps) {
   const handleLinkClick = (e: React.MouseEvent<HTMLAnchorElement>, href: string) => {
     setMobileMenuOpen(false);
     const targetId = href.replace("#", "");
-    const targetEl = document.getElementById(targetId);
+    const targetEl =
+      document.getElementById(targetId) ||
+      (targetId === "lets-fly" ? document.getElementById("lets-work") : null) ||
+      (targetId === "lets-work" ? document.getElementById("lets-fly") : null);
 
     if (targetEl) {
       e.preventDefault();
-      targetEl.scrollIntoView({ behavior: "smooth" });
+      const lenis = (window as any)?.__lenis;
+      if (lenis) {
+        lenis.scrollTo(targetEl, { duration: 1.2, offset: 0 });
+      } else {
+        targetEl.scrollIntoView({ behavior: "smooth" });
+      }
     }
   };
 
@@ -132,8 +140,8 @@ export default function Navbar({ navRef }: NavbarProps) {
               sizes="(max-width: 640px) 32px, (max-width: 1024px) 40px, 44px"
             />
           </div>
-          <span className="font-display text-lg sm:text-xl md:text-2xl font-black tracking-tight text-dark transition-colors duration-200 group-hover:text-brand">
-            MindStack
+          <span className="font-display text-lg sm:text-xl md:text-xl font-black tracking-tight text-dark transition-colors duration-200 group-hover:text-brand">
+            MINDSTACK
           </span>
         </Link>
 

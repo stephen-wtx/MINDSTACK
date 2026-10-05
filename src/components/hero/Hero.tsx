@@ -119,6 +119,22 @@ export default function Hero({ navRef }: HeroProps) {
     return () => ctx.revert();
   }, [navRef]);
 
+  const handleCtaClick = (e: React.MouseEvent<HTMLAnchorElement>) => {
+    const target =
+      document.getElementById("lets-work") ||
+      document.getElementById("lets-fly");
+
+    if (target) {
+      e.preventDefault();
+      const lenis = (window as any)?.__lenis;
+      if (lenis) {
+        lenis.scrollTo(target, { duration: 1.2, offset: 0 });
+      } else {
+        target.scrollIntoView({ behavior: "smooth" });
+      }
+    }
+  };
+
   return (
     <section
       ref={containerRef}
@@ -159,67 +175,63 @@ export default function Hero({ navRef }: HeroProps) {
         <div className="max-w-xl md:max-w-2xl lg:max-w-3xl flex flex-col justify-center text-left">
 
           {/* ─────────────────────────────────────────────────────────
-              MAIN HEADLINE — Anti-clipping solution:
-              - NO overflow-hidden on wrappers (causes clipping with translateY)
-              - Extra vertical padding on inner spans to protect ascenders/descenders
-              - line-height generous enough for Boldonse glyphs
+              MAIN HEADLINE:
+              - Proportional, balanced display size (not oversized)
+              - Generous, elegant line-height for complete glyph breathing room
+              - Clear vertical separation between lines across all breakpoints
           ──────────────────────────────────────────────────────────── */}
           <h1 className="font-display font-black text-brand tracking-tight uppercase">
-            {/*
-              Line 1: DESIGN &
-              The outer span is NOT overflow-hidden — this prevents any translateY
-              from clipping the glyphs. Instead we allow natural overflow with
-              generous padding and rely on opacity + subtle translateY for motion.
-            */}
-            <span className="block pb-1">
+            {/* Line 1: DESIGN & */}
+            <span className="block pb-2 sm:pb-3 md:pb-4">
               <span
                 ref={titleLine1Ref}
                 className="block will-change-transform
-                  text-[clamp(2.5rem,8vw,7.5rem)]
-                  leading-[1.0]
-                  sm:leading-[0.96]
-                  lg:leading-[0.94]"
+                  text-[clamp(2.25rem,5.2vw,5rem)]
+                  leading-[1.18]
+                  sm:leading-[1.14]
+                  lg:leading-[1.10]"
               >
                 DESIGN &amp;
               </span>
             </span>
 
             {/* Line 2: TECNOLOGIA */}
-            <span className="block pb-2">
+            <span className="block">
               <span
                 ref={titleLine2Ref}
                 className="block will-change-transform
-                  text-[clamp(2.5rem,8vw,7.5rem)]
-                  leading-[1.0]
-                  sm:leading-[0.96]
-                  lg:leading-[0.94]"
+                  text-[clamp(2.25rem,5.2vw,5rem)]
+                  leading-[1.18]
+                  sm:leading-[1.14]
+                  lg:leading-[1.10]"
               >
                 TECNOLOGIA
               </span>
             </span>
           </h1>
 
-          {/* Descriptive Body Copy */}
-          <div className="mt-5 sm:mt-7 md:mt-9 max-w-md sm:max-w-lg lg:max-w-xl">
+          {/* Descriptive Body Copy — airy, comfortable spacing */}
+          <div className="mt-6 sm:mt-8 md:mt-10 lg:mt-12 max-w-md sm:max-w-lg lg:max-w-xl">
             <p
               ref={textRef}
-              className="font-body text-dark/85 text-sm sm:text-base md:text-lg lg:text-xl font-normal leading-relaxed will-change-transform"
+              className="font-body text-dark/85 text-sm sm:text-base md:text-lg lg:text-xl font-normal leading-[1.7] will-change-transform"
             >
               Buscamos formas de unir os nossos pontos fortes em cada projecto.
             </p>
           </div>
 
-          {/* Interactive CTA */}
-          <div className="mt-7 sm:mt-9 md:mt-11">
+          {/* Interactive CTA — points directly to LET'S WORK section */}
+          <div className="mt-8 sm:mt-10 md:mt-12 lg:mt-14">
             <a
               ref={ctaRef}
-              href="#quem-somos"
+              href="#lets-work"
+              onClick={handleCtaClick}
               data-cursor-hover="true"
               className="group inline-flex items-center gap-2.5 sm:gap-3.5 font-body text-sm sm:text-base md:text-lg font-medium tracking-wide text-brand transition-all duration-300 will-change-transform focus:outline-none focus-visible:ring-2 focus-visible:ring-brand rounded-sm"
-              aria-label="Vamos voar junto? Explorar MindStack"
+              aria-label="Vamos voar? Ir para a seção LET'S WORK"
             >
               <span className="relative py-1">
-                Vamos voar junto?
+                Vamos voar?
                 {/* Minimalist animated underline */}
                 <span className="absolute bottom-0 left-0 w-full h-[1.5px] sm:h-[2px] bg-brand origin-left scale-x-100 group-hover:scale-x-110 transition-transform duration-300 ease-out" />
               </span>

@@ -23,53 +23,57 @@ const PROJECTS_DATA: ProjectItem[] = [
     number: "01",
     title: "Orbitta-11",
     description:
-      "Plataforma digital para descobrir e explorar websites úteis de diferentes nichos e categorias.",
+      "Uma plataforma para descobrir e explorar sites úteis, organizados por diferentes categorias e interesses.",
     link: "https://orbitta-11.vercel.app/",
     image: "/images/orbitta-11.png",
     gridClass: "lg:col-span-7",
     aspectRatio: "aspect-[16/10] sm:aspect-[16/10] lg:aspect-[16/11]",
   },
+
   {
-    id: "campustore",
+    id: "debate-club",
     number: "02",
-    title: "CampuStore",
+    title: "Debate Club",
     description:
-      "Marketplace académico criado para facilitar a compra, venda, troca e doação de materiais entre estudantes.",
-    link: "https://cs-psi-five.vercel.app/",
-    image: "/images/campustore.png",
+      "Um poster criado para divulgar um evento de debate online, com uma comunicação simples, clara e objetiva.",
+    link: "https://tak-away.vercel.app",
+    image: "/images/debate.jpeg",
     gridClass: "lg:col-span-5",
     aspectRatio: "aspect-[16/10] sm:aspect-[4/3] lg:aspect-[16/11]",
   },
+
   {
-    id: "sweet-world",
+    id: "shop-sync",
     number: "03",
-    title: "Sweet World",
+    title: "Shop Sync",
     description:
-      "Landing page desenvolvida para uma sorveteria, com foco numa apresentação visual leve, atractiva e orientada para a experiência da marca.",
+      "Um poster promocional criado para apresentar uma página de venda de contas de streaming de forma simples e visualmente atrativa.",
     link: "https://sweet-world.onrender.com",
-    image: "/images/sweet-world.png",
+    image: "/images/shopsync-poster.jpg",
     gridClass: "lg:col-span-5",
     aspectRatio: "aspect-[16/10] sm:aspect-[4/3] lg:aspect-[1/1]",
   },
+
   {
-    id: "take-away-rui-jr",
+    id: "talent-hub",
     number: "04",
-    title: "Take Away Rui Jr",
+    title: "Talent Hub",
     description:
-      "Landing page e sistema digital de pedidos desenvolvido para simplificar a apresentação do menu e a experiência de encomenda.",
-    link: "https://tak-away.vercel.app",
-    image: "/images/take-away-rui-jr.png",
+      "Uma plataforma que conecta clientes a profissionais, tornando mais fácil encontrar e contratar serviços.",
+    link: "https://talenthub-26tl.onrender.com",
+    image: "/images/talent-hub.png",
     gridClass: "lg:col-span-7",
     aspectRatio: "aspect-[16/10] sm:aspect-[16/10] lg:aspect-[16/10]",
   },
+
   {
-    id: "talent-hub",
+    id: "campustore",
     number: "05",
-    title: "Talent Hub",
+    title: "CampuStore",
     description:
-      "Plataforma digital para aproximar clientes e profissionais, facilitando a descoberta e contratação de serviços especializados.",
-    link: "https://talenthub-26tl.onrender.com",
-    image: "/images/talent-hub.png",
+      "Um marketplace feito para estudantes comprarem, venderem, trocarem ou doarem materiais de forma simples.",
+    link: "https://cs-psi-five.vercel.app/",
+    image: "/images/campustore.png",
     gridClass: "lg:col-span-12",
     aspectRatio: "aspect-[16/10] sm:aspect-[16/9] lg:aspect-[21/9] xl:aspect-[2.4/1]",
   },
@@ -165,7 +169,7 @@ export default function Projects() {
           <div>
             <h2
               ref={titleRef}
-              className="font-display font-black text-brand tracking-tight uppercase text-4xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl will-change-transform"
+              className="font-display font-black text-brand tracking-tight uppercase text-[clamp(2rem,4.5vw,3.75rem)] leading-[1.12] sm:leading-[1.10] will-change-transform"
             >
               PROJECTOS
             </h2>
@@ -190,7 +194,8 @@ export default function Projects() {
               target="_blank"
               rel="noopener noreferrer"
               data-cursor-hover="true"
-              className={`project-item group relative block w-full overflow-hidden bg-dark/5 will-change-transform ${project.gridClass} ${project.aspectRatio} focus:outline-none focus-visible:ring-2 focus-visible:ring-brand`}
+              className={`project-item group relative block w-full overflow-hidden rounded-xl bg-dark/5 will-change-transform ${project.gridClass} ${project.aspectRatio} focus:outline-none focus-visible:ring-2 focus-visible:ring-brand`}
+              // className={`project-item group relative block w-full overflow-hidden bg-dark/5 will-change-transform ${project.gridClass} ${project.aspectRatio} focus:outline-none focus-visible:ring-2 focus-visible:ring-brand`}
               aria-label={`Ver projecto ${project.title} (abre numa nova aba)`}
             >
               {/* Project Image with Subtle Scale on Hover */}
@@ -212,7 +217,7 @@ export default function Projects() {
                 
                 {/* Title and Arrow */}
                 <div className="flex items-center justify-between gap-4 transform translate-y-0 sm:translate-y-2 sm:group-hover:translate-y-0 transition-transform duration-500 ease-out">
-                  <h3 className="font-display font-black text-2xl sm:text-3xl md:text-4xl text-white tracking-tight uppercase">
+                  <h3 className="font-display font-black text-xl sm:text-2xl md:text-[1.75rem] leading-[1.2] text-white tracking-tight uppercase">
                     {project.title}
                   </h3>
 
