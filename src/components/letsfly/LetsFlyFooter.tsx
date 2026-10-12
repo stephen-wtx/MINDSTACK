@@ -4,8 +4,10 @@ import React, { useRef, useEffect } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { Mail, MessageCircle } from "lucide-react";
+import { useLanguage } from "@/context/LanguageContext";
 
 export default function LetsFlyFooter() {
+  const { t } = useLanguage();
   const containerRef = useRef<HTMLElement>(null);
   const videoRef = useRef<HTMLVideoElement>(null);
   const titleRef = useRef<HTMLHeadingElement>(null);
@@ -157,18 +159,18 @@ export default function LetsFlyFooter() {
           <p className="font-body text-white font-medium
             text-xl sm:text-2xl md:text-3xl
             leading-snug tracking-tight mb-3 sm:mb-4">
-            Tem uma ideia?
+            {t.letsFly.ideaHeadline}
           </p>
           <p className="font-body text-white/90 font-medium
             text-lg sm:text-xl md:text-2xl
             leading-snug tracking-tight mb-3 sm:mb-4">
-            Vamos transformar a ideia em algo real.
+            {t.letsFly.ideaSubheadline}
           </p>
           <p className="font-body text-white/70 font-normal
             text-sm sm:text-base md:text-lg
             leading-relaxed">
-            Estamos disponíveis para novos projectos,<br />
-            ideias e colaborações.
+            {t.letsFly.copyLine1}<br />
+            {t.letsFly.copyLine2}
           </p>
         </div>
 
@@ -184,11 +186,11 @@ export default function LetsFlyFooter() {
             href="mailto:mindstack258@proton.me"
             data-cursor-hover="true"
             className="group flex flex-col items-start gap-2.5 focus:outline-none focus-visible:ring-2 focus-visible:ring-white rounded-sm"
-            aria-label="Enviar email para mindstack258@proton.me"
+            aria-label={t.letsFly.emailAria}
           >
             <div className="flex items-center gap-2 font-body text-xs sm:text-sm font-semibold tracking-widest text-white/60 uppercase">
               <Mail className="w-3.5 h-3.5 flex-shrink-0" aria-hidden="true" />
-              <span>Email</span>
+              <span>{t.letsFly.emailLabel}</span>
             </div>
             <div className="flex items-center gap-3">
               <span className="font-body font-semibold
@@ -213,11 +215,11 @@ export default function LetsFlyFooter() {
             rel="noopener noreferrer"
             data-cursor-hover="true"
             className="group flex flex-col items-start gap-2.5 focus:outline-none focus-visible:ring-2 focus-visible:ring-white rounded-sm"
-            aria-label="Contactar no WhatsApp (+258 83 457 7714)"
+            aria-label={t.letsFly.whatsappAria}
           >
             <div className="flex items-center gap-2 font-body text-xs sm:text-sm font-semibold tracking-widest text-white/60 uppercase">
               <MessageCircle className="w-3.5 h-3.5 flex-shrink-0" aria-hidden="true" />
-              <span>WhatsApp</span>
+              <span>{t.letsFly.whatsappLabel}</span>
             </div>
             <div className="flex items-center gap-3">
               <span className="font-body font-semibold
@@ -256,7 +258,7 @@ export default function LetsFlyFooter() {
           <span className="font-display font-bold text-white/80 tracking-tight">
             MINDSTACK
           </span>
-          <span>Design &amp; Tecnologia</span>
+          <span>{t.footer.studioTagline}</span>
         </div>
 
         {/* Center: Social Links */}
@@ -267,9 +269,9 @@ export default function LetsFlyFooter() {
             rel="noopener noreferrer"
             data-cursor-hover="true"
             className="hover:text-white transition-colors duration-200 uppercase tracking-wider font-medium"
-            aria-label="Perfil do Instagram da Mindstack (abre numa nova aba)"
+            aria-label={t.footer.instagramAria}
           >
-            Instagram
+            {t.footer.instagram}
           </a>
           <a
             href="https://wa.me/258834577714"
@@ -277,9 +279,9 @@ export default function LetsFlyFooter() {
             rel="noopener noreferrer"
             data-cursor-hover="true"
             className="hover:text-white transition-colors duration-200 uppercase tracking-wider font-medium"
-            aria-label="WhatsApp da Mindstack (abre numa nova aba)"
+            aria-label={t.footer.whatsappAria}
           >
-            WhatsApp
+            {t.footer.whatsapp}
           </a>
         </div>
 

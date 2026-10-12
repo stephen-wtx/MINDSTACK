@@ -4,6 +4,7 @@ import React, { useState, useEffect, useRef } from "react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import gsap from "gsap";
+import { useLanguage } from "@/context/LanguageContext";
 
 interface TeamMember {
   id: string;
@@ -54,6 +55,7 @@ const TEAM_MEMBERS: TeamMember[] = [
 ];
 
 export default function TeamSection() {
+  const { t } = useLanguage();
   const router = useRouter();
   const containerRef = useRef<HTMLElement>(null);
   const heroRef = useRef<HTMLDivElement>(null);
@@ -129,7 +131,7 @@ export default function TeamSection() {
             onClick={handleBack}
             data-cursor-hover="true"
             className="group inline-flex items-center gap-2.5 font-body text-xs sm:text-sm font-semibold tracking-widest uppercase text-dark/70 hover:text-brand transition-colors duration-200 py-1.5 focus:outline-none focus-visible:ring-2 focus-visible:ring-brand rounded-sm"
-            aria-label="Voltar para a página anterior"
+            aria-label={t.team.backAria}
           >
             <span
               className="inline-block transform transition-transform duration-300 ease-out group-hover:-translate-x-1.5 font-sans text-base sm:text-lg"
@@ -137,7 +139,7 @@ export default function TeamSection() {
             >
               ←
             </span>
-            <span>Voltar</span>
+            <span>{t.team.back}</span>
           </button>
         </div>
 
@@ -146,10 +148,10 @@ export default function TeamSection() {
         ─────────────────────────────────────────────────────────────── */}
         <div ref={heroRef} className="max-w-5xl mb-14 sm:mb-16 lg:mb-20 will-change-transform">
           <h1 className="font-display font-black text-brand tracking-tight uppercase text-[clamp(2.75rem,7vw,5.75rem)] leading-none select-none">
-            TEAM
+            {t.team.title}
           </h1>
           <p className="mt-5 sm:mt-6 font-body text-dark/85 text-lg sm:text-xl md:text-2xl lg:text-[1.7rem] font-normal leading-snug tracking-tight">
-            As pessoas por trás das ideias, do design e da tecnologia.
+            {t.team.subtitle}
           </p>
         </div>
 
@@ -163,6 +165,10 @@ export default function TeamSection() {
         >
           {TEAM_MEMBERS.map((member, index) => {
             const isExpanded = !!expandedIds[member.id];
+            const memberTrans = t.team.members.find((m) => m.id === member.id);
+            const name = memberTrans?.name || member.name;
+            const role = memberTrans?.role || member.role;
+            const description = memberTrans?.description || member.description;
 
             return (
               <article
@@ -176,7 +182,7 @@ export default function TeamSection() {
                 >
                   <Image
                     src={member.image}
-                    alt={`Fotografia de ${member.name}, ${member.role}`}
+                    alt={`${name}, ${role}`}
                     fill
                     priority={index < 2}
                     loading={index < 2 ? "eager" : "lazy"}
@@ -192,12 +198,12 @@ export default function TeamSection() {
                 <div className="mt-5 sm:mt-6 flex flex-col">
                   {/* 1. Nome */}
                   <h2 className="font-display font-black text-xl sm:text-2xl md:text-[1.7rem] text-dark tracking-tight uppercase group-hover:text-brand transition-colors duration-200 leading-snug">
-                    {member.name}
+                    {name}
                   </h2>
 
                   {/* 2. Cargo */}
                   <span className="font-body text-xs sm:text-sm font-bold tracking-widest text-brand uppercase mt-1.5 sm:mt-2">
-                    {member.role}
+                    {role}
                   </span>
 
                   {/* 3. Descrição — Accordion Minimalista (+ / −) */}
@@ -211,7 +217,7 @@ export default function TeamSection() {
                       aria-controls={`desc-${member.id}`}
                     >
                       <span className="font-body text-xs font-semibold tracking-widest uppercase">
-                        Descrição
+                        {t.team.descriptionToggle}
                       </span>
                       <span
                         className="font-sans text-base sm:text-lg font-light leading-none transition-transform duration-200"
@@ -232,7 +238,7 @@ export default function TeamSection() {
                     >
                       <div className="overflow-hidden">
                         <p className="font-body text-dark/75 text-xs sm:text-sm md:text-[0.925rem] font-normal leading-relaxed">
-                          {member.description}
+                          {description}
                         </p>
                       </div>
                     </div>

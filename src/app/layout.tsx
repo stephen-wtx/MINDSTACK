@@ -2,6 +2,7 @@ import type { Metadata, Viewport } from "next";
 import { DM_Sans } from "next/font/google";
 import SmoothScrollProvider from "@/components/providers/SmoothScrollProvider";
 import CustomCursor from "@/components/cursor/CustomCursor";
+import { LanguageProvider } from "@/context/LanguageContext";
 import "./globals.css";
 
 const dmSans = DM_Sans({
@@ -53,10 +54,12 @@ export default function RootLayout({
   return (
     <html lang="pt" className={`${dmSans.variable}`}>
       <body className="bg-background text-dark antialiased selection:bg-brand selection:text-white min-h-screen">
-        <SmoothScrollProvider>
-          <CustomCursor />
-          {children}
-        </SmoothScrollProvider>
+        <LanguageProvider>
+          <SmoothScrollProvider>
+            <CustomCursor />
+            {children}
+          </SmoothScrollProvider>
+        </LanguageProvider>
       </body>
     </html>
   );

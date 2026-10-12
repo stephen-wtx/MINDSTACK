@@ -4,6 +4,7 @@ import React, { useState, useRef, useEffect } from "react";
 import Link from "next/link";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { useLanguage } from "@/context/LanguageContext";
 
 /* ─────────────────────────────────────────────────────────────────────────
    SERVICES DATA
@@ -94,6 +95,7 @@ const SERVICES_DATA: ServiceCategory[] = [
    COMPONENT
 ───────────────────────────────────────────────────────────────────────── */
 export default function AboutServices() {
+  const { t } = useLanguage();
   const [openCategory, setOpenCategory] = useState<"tech" | "design" | null>(null);
 
   const sectionRef = useRef<HTMLElement>(null);
@@ -269,7 +271,7 @@ export default function AboutServices() {
                   leading-[1.12] sm:leading-[1.10]
                   mb-6 sm:mb-8 lg:mb-10"
               >
-                QUEM SOMOS?
+                {t.about.quemSomosTitle}
               </h2>
 
               {/* Primary Copy */}
@@ -280,11 +282,7 @@ export default function AboutServices() {
                     text-base sm:text-lg md:text-xl lg:text-[1.2rem]
                     will-change-transform"
                 >
-                  Somos um grupo de jovens criativos que, em apenas um ano no mercado,
-                  tem transformado desafios em soluções simples, directas e eficazes.
-                  Unimos design e tecnologia para criar experiências digitais elegantes,
-                  funcionais e pensadas para responder às necessidades reais dos nossos
-                  clientes.
+                  {t.about.quemSomosText}
                 </p>
               </div>
 
@@ -294,10 +292,10 @@ export default function AboutServices() {
                   href="/team"
                   data-cursor-hover="true"
                   className="group inline-flex items-center gap-3 font-body text-base sm:text-lg font-medium tracking-wide text-brand transition-all duration-300 focus:outline-none focus-visible:ring-2 focus-visible:ring-brand rounded-sm"
-                  aria-label="Conhecer a Nossa Team"
+                  aria-label={t.about.teamLinkAria}
                 >
                   <span className="relative py-1">
-                    Nossa Team
+                    {t.about.teamLink}
                     <span className="absolute bottom-0 left-0 w-full h-[1.5px] sm:h-[2px] bg-brand origin-left scale-x-0 group-hover:scale-x-100 transition-transform duration-300 ease-out" />
                   </span>
                   <span
@@ -321,19 +319,19 @@ export default function AboutServices() {
         <div id="servicos" className="pt-16 sm:pt-24 border-t border-dark/10">
 
           {/* Section Headline */}
-          <h2
-            ref={titleServicosRef}
-            className="font-display font-black text-brand tracking-tight uppercase will-change-transform
-              text-[clamp(2rem,4.5vw,3.75rem)]
-              leading-[1.12] sm:leading-[1.10]
-              mb-8 sm:mb-12 lg:mb-14"
-          >
-            NOSSOS SERVIÇOS
-          </h2>
+        <h2
+          ref={titleServicosRef}
+          className="font-display font-black text-brand tracking-tight uppercase will-change-transform
+            text-[clamp(2rem,4.5vw,3.75rem)]
+            leading-relaxed sm:leading-[1.10]
+            mb-8 sm:mb-12 lg:mb-14"
+        >
+          {t.about.servicesTitle}
+        </h2>
 
           {/* Accordion — TECNOLOGIA + DESIGN */}
           <div ref={accordionRef} className="w-full flex flex-col">
-            {SERVICES_DATA.map((category) => {
+            {t.about.services.map((category) => {
               const isOpen = openCategory === category.id;
 
               return (

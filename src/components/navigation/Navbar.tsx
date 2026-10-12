@@ -6,6 +6,8 @@ import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { useLanguage } from "@/context/LanguageContext";
+import LanguageSwitcher from "./LanguageSwitcher";
 
 interface NavbarProps {
   navRef?: React.RefObject<HTMLElement>;
@@ -25,11 +27,19 @@ const MENU_ITEMS: MenuItem[] = [
 ];
 
 export default function Navbar({ navRef }: NavbarProps) {
+  const { t } = useLanguage();
   const pathname = usePathname();
   const router = useRouter();
   const isProjectsPage = pathname === "/projects";
   const isTeamPage = pathname === "/team";
   const isSubPage = isProjectsPage || isTeamPage;
+
+  const menuItems: MenuItem[] = [
+    { id: "inicio", label: t.nav.inicio, href: "#inicio" },
+    { id: "quem-somos", label: t.nav.quemSomos, href: "#quem-somos" },
+    { id: "projectos", label: t.nav.projectos, href: "#projectos" },
+    { id: "lets-fly", label: t.nav.letsFly, href: "#lets-work" },
+  ];
 
   const getInitialActiveId = () => {
     if (isProjectsPage) return "projectos";
@@ -188,7 +198,7 @@ export default function Navbar({ navRef }: NavbarProps) {
           href="/"
           onClick={handleLogoClick}
           className="flex items-center gap-2.5 sm:gap-3.5 group focus:outline-none focus-visible:ring-2 focus-visible:ring-brand rounded-sm z-50"
-          aria-label="MindStack - Página Inicial"
+          aria-label={t.nav.brandLabel}
         >
           <div className="relative w-8 h-8 sm:w-10 sm:h-10 lg:w-11 lg:h-11 flex-shrink-0 transition-transform duration-300 group-hover:scale-105">
             <Image
@@ -205,40 +215,48 @@ export default function Navbar({ navRef }: NavbarProps) {
           </span>
         </Link>
 
-        {/* Right: Desktop Navigation with Animated Sliding Indicator */}
-        <div
-          ref={menuContainerRef}
-          className="hidden md:flex relative items-center gap-7 lg:gap-10 xl:gap-12"
-        >
-          {MENU_ITEMS.map((item) => {
-            const isActive = activeId === item.id;
+        {/* Right: Desktop Navigation with Sliding Indicator + Language Switcher */}
+        <div className="hidden md:flex items-center gap-6 lg:gap-8 xl:gap-10">
+          <div
+            ref={menuContainerRef}
+            className="relative flex items-center gap-7 lg:gap-9 xl:gap-11"
+          >
+            {menuItems.map((item) => {
+              const isActive = activeId === item.id;
 
-            return (
-              <a
-                key={item.id}
-                ref={(el) => {
-                  itemRefs.current[item.id] = el;
-                }}
-                href={item.href}
-                onClick={(e) => handleLinkClick(e, item)}
-                data-cursor-hover="true"
-                className={`relative py-1 font-body text-xs lg:text-sm font-medium tracking-widest uppercase transition-colors duration-200 ${
-                  isActive
-                    ? "text-brand font-semibold"
-                    : "text-dark/75 hover:text-dark"
-                }`}
-              >
-                <span>{item.label}</span>
-              </a>
-            );
-          })}
+              return (
+                <a
+                  key={item.id}
+                  ref={(el) => {
+                    itemRefs.current[item.id] = el;
+                  }}
+                  href={item.href}
+                  onClick={(e) => handleLinkClick(e, item)}
+                  data-cursor-hover="true"
+                  className={`relative py-1 font-body text-xs lg:text-sm font-medium tracking-widest uppercase transition-colors duration-200 ${
+                    isActive
+                      ? "text-brand font-semibold"
+                      : "text-dark/75 hover:text-dark"
+                  }`}
+                >
+                  <span>{item.label}</span>
+                </a>
+              );
+            })}
 
-          {/* Continuous Sliding Active Indicator Line */}
-          <span
-            ref={indicatorRef}
-            className="absolute bottom-0 left-0 h-[2px] bg-brand pointer-events-none will-change-transform"
-            style={{ width: 0 }}
-          />
+            {/* Continuous Sliding Active Indicator Line */}
+            <span
+              ref={indicatorRef}
+              className="absolute bottom-0 left-0 h-[2px] bg-brand pointer-events-none will-change-transform"
+              style={{ width: 0 }}
+            />
+          </div>
+
+          {/* Minimalist Separator */}
+          <div className="h-3.5 w-[1px] bg-dark/15" aria-hidden="true" />
+
+          {/* Desktop Language Switcher */}
+          <LanguageSwitcher variant="desktop" />
         </div>
 
         {/* Mobile: Minimalist 2-Line Hamburger Button */}
@@ -248,7 +266,7 @@ export default function Navbar({ navRef }: NavbarProps) {
           className="md:hidden relative z-50 flex flex-col items-center justify-center w-11 h-11 focus:outline-none focus-visible:ring-2 focus-visible:ring-brand p-2"
           aria-expanded={mobileMenuOpen}
           aria-controls="mobile-fullscreen-menu"
-          aria-label={mobileMenuOpen ? "Fechar menu" : "Abrir menu"}
+          aria-label={mobileMenuOpen ? t.nav.menuClose : t.nav.menuOpen}
         >
           <div className="w-6 h-3 flex flex-col justify-between">
             {/* Line 1 */}
@@ -278,7 +296,7 @@ export default function Navbar({ navRef }: NavbarProps) {
         aria-hidden={!mobileMenuOpen}
       >
         <div className="flex flex-col space-y-7 my-auto">
-          {MENU_ITEMS.map((item, index) => {
+          {menuItems.map((item, index) => {
             const isActive = activeId === item.id;
 
             return (
@@ -308,19 +326,31 @@ export default function Navbar({ navRef }: NavbarProps) {
           })}
         </div>
 
-        {/* Mobile Menu Footer Note */}
+        {/* Mobile Menu Footer: Language Switcher + Brand Note */}
         <div
-          className={`pt-6 border-t border-dark/10 flex items-center justify-between transition-all duration-300 ${
+          className={`pt-6 border-t border-dark/10 flex flex-col sm:flex-row sm:items-center justify-between gap-4 transition-all duration-300 ${
             mobileMenuOpen ? "opacity-100" : "opacity-0"
           }`}
           style={{ transitionDelay: mobileMenuOpen ? "350ms" : "0ms" }}
         >
-          <span className="font-body text-xs text-dark-muted tracking-wider uppercase">
-            Mindstack Design & Tecnologia
-          </span>
-          <span className="font-body text-xs text-brand font-medium">
-            2026
-          </span>
+          <div className="flex items-center gap-3">
+            <span className="font-body text-xs text-dark-muted tracking-wider uppercase">
+              {t.languageSwitcher.label}:
+            </span>
+            <LanguageSwitcher
+              variant="mobile"
+              onSelect={() => setMobileMenuOpen(false)}
+            />
+          </div>
+
+          <div className="flex items-center justify-between sm:justify-end gap-3 text-dark-muted">
+            <span className="font-body text-xs tracking-wider uppercase">
+              {t.nav.mobileSubline}
+            </span>
+            <span className="font-body text-xs text-brand font-medium">
+              2026
+            </span>
+          </div>
         </div>
       </div>
     </header>

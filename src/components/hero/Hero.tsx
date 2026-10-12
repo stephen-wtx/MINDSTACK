@@ -2,12 +2,14 @@
 
 import React, { useEffect, useRef } from "react";
 import gsap from "gsap";
+import { useLanguage } from "@/context/LanguageContext";
 
 interface HeroProps {
   navRef?: React.RefObject<HTMLElement>;
 }
 
 export default function Hero({ navRef }: HeroProps) {
+  const { t } = useLanguage();
   const containerRef = useRef<HTMLDivElement>(null);
   const videoBgRef = useRef<HTMLDivElement>(null);
   const videoRef = useRef<HTMLVideoElement>(null);
@@ -190,11 +192,11 @@ export default function Hero({ navRef }: HeroProps) {
                   sm:leading-[1.14]
                   lg:leading-[1.10]"
               >
-                DESIGN &amp;
+                {t.hero.titleLine1}
               </span>
             </span>
 
-            {/* Line 2: TECNOLOGIA */}
+            {/* Line 2: TECNOLOGIA / TECHNOLOGY */}
             <span className="block">
               <span
                 ref={titleLine2Ref}
@@ -204,7 +206,7 @@ export default function Hero({ navRef }: HeroProps) {
                   sm:leading-[1.14]
                   lg:leading-[1.10]"
               >
-                TECNOLOGIA
+                {t.hero.titleLine2}
               </span>
             </span>
           </h1>
@@ -215,7 +217,7 @@ export default function Hero({ navRef }: HeroProps) {
               ref={textRef}
               className="font-body text-dark/85 text-sm sm:text-base md:text-lg lg:text-xl font-normal leading-[1.7] will-change-transform"
             >
-              Buscamos formas de unir os nossos pontos fortes em cada projecto.
+              {t.hero.description}
             </p>
           </div>
 
@@ -227,10 +229,10 @@ export default function Hero({ navRef }: HeroProps) {
               onClick={handleCtaClick}
               data-cursor-hover="true"
               className="group inline-flex items-center gap-2.5 sm:gap-3.5 font-body text-sm sm:text-base md:text-lg font-medium tracking-wide text-brand transition-all duration-300 will-change-transform focus:outline-none focus-visible:ring-2 focus-visible:ring-brand rounded-sm"
-              aria-label="Vamos voar? Ir para a seção LET'S WORK"
+              aria-label={t.hero.ctaAria}
             >
               <span className="relative py-1">
-                Vamos voar?
+                {t.hero.cta}
                 {/* Minimalist animated underline */}
                 <span className="absolute bottom-0 left-0 w-full h-[1.5px] sm:h-[2px] bg-brand origin-left scale-x-100 group-hover:scale-x-110 transition-transform duration-300 ease-out" />
               </span>

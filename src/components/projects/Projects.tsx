@@ -5,6 +5,7 @@ import Image from "next/image";
 import Link from "next/link";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { useLanguage } from "@/context/LanguageContext";
 
 interface ProjectItem {
   id: string;
@@ -80,6 +81,7 @@ const PROJECTS_DATA: ProjectItem[] = [
 ];
 
 export default function Projects() {
+  const { t } = useLanguage();
   const sectionRef = useRef<HTMLElement>(null);
   const titleRef = useRef<HTMLHeadingElement>(null);
   const galleryRef = useRef<HTMLDivElement>(null);
@@ -171,12 +173,12 @@ export default function Projects() {
               ref={titleRef}
               className="font-display font-black text-brand tracking-tight uppercase text-[clamp(2rem,4.5vw,3.75rem)] leading-[1.12] sm:leading-[1.10] will-change-transform"
             >
-              PROJECTOS
+              {t.homeProjects.title}
             </h2>
           </div>
           
           <span className="font-body text-xs sm:text-sm text-dark-muted/70 tracking-widest uppercase">
-            Seleção de Trabalhos Recentes / 01 — 05
+            {t.homeProjects.subtitle}
           </span>
         </div>
 
@@ -190,6 +192,9 @@ export default function Projects() {
           {PROJECTS_DATA.map((project) => {
             const isExternal = Boolean(project.link);
             const targetHref = isExternal ? project.link : "/projects";
+            const itemTrans = t.homeProjects.items.find((item) => item.id === project.id);
+            const title = itemTrans?.title || project.title;
+            const description = itemTrans?.description || project.description;
 
             return (
               <Link
@@ -201,14 +206,14 @@ export default function Projects() {
                 className={`project-item group relative block w-full overflow-hidden rounded-xl bg-dark/5 will-change-transform ${project.gridClass} ${project.aspectRatio} focus:outline-none focus-visible:ring-2 focus-visible:ring-brand`}
                 aria-label={
                   isExternal
-                    ? `Ver projecto ${project.title} (abre numa nova aba)`
-                    : `Ver projecto ${project.title} na página de Projectos`
+                    ? `${title} (external link)`
+                    : `${title}`
                 }
               >
                 {/* Project Image with Subtle Scale on Hover */}
                 <Image
                   src={project.image}
-                  alt={`Screenshot do projecto ${project.title}`}
+                  alt={title}
                   fill
                   sizes="(max-width: 768px) 100vw, (max-width: 1280px) 50vw, 60vw"
                   className="object-cover object-top transition-transform duration-700 ease-out group-hover:scale-[1.035]"
@@ -225,7 +230,7 @@ export default function Projects() {
                   {/* Title and Arrow */}
                   <div className="flex items-center justify-between gap-4 transform translate-y-0 sm:translate-y-2 sm:group-hover:translate-y-0 transition-transform duration-500 ease-out">
                     <h3 className="font-display font-black text-xl sm:text-2xl md:text-[1.75rem] leading-[1.2] text-white tracking-tight uppercase">
-                      {project.title}
+                      {title}
                     </h3>
 
                     {/* Link Arrow Indicator */}
@@ -239,7 +244,7 @@ export default function Projects() {
 
                   {/* Description */}
                   <p className="font-body text-white/80 text-xs sm:text-sm md:text-base font-normal leading-relaxed max-w-xl mt-2.5 sm:mt-3 transform translate-y-0 sm:translate-y-2 sm:group-hover:translate-y-0 transition-transform duration-500 ease-out delay-75">
-                    {project.description}
+                    {description}
                   </p>
 
                 </div>
@@ -259,10 +264,10 @@ export default function Projects() {
             href="/projects"
             data-cursor-hover="true"
             className="group inline-flex items-center gap-3 font-body text-base sm:text-lg md:text-xl font-semibold tracking-wider uppercase text-brand transition-all duration-300 focus:outline-none focus-visible:ring-2 focus-visible:ring-brand rounded-sm py-2"
-            aria-label="Ver todos os projectos"
+            aria-label={t.homeProjects.ctaAria}
           >
             <span className="relative py-1">
-              VER PROJECTOS
+              {t.homeProjects.cta}
               {/* Animated Underline */}
               <span className="absolute bottom-0 left-0 w-full h-[2px] bg-brand origin-left scale-x-0 group-hover:scale-100 transition-transform duration-300 ease-out" />
             </span>

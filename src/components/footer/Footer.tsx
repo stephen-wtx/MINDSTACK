@@ -1,8 +1,11 @@
 "use client";
 
 import React from "react";
+import { useLanguage } from "@/context/LanguageContext";
 
 export default function Footer() {
+  const { t } = useLanguage();
+
   return (
     <footer
       className="relative z-10 w-full max-w-[1720px] mx-auto px-5 sm:px-8 md:px-12 lg:px-16 xl:px-20
@@ -18,7 +21,7 @@ export default function Footer() {
         <span className="font-display font-bold text-dark tracking-tight">
           MINDSTACK
         </span>
-        <span className="text-dark-muted/80">Design &amp; Tecnologia</span>
+        <span className="text-dark-muted/80">{t.footer.studioTagline}</span>
       </div>
 
       {/* Center: Social Links */}
@@ -29,9 +32,9 @@ export default function Footer() {
           rel="noopener noreferrer"
           data-cursor-hover="true"
           className="text-dark/75 hover:text-brand transition-colors duration-200 uppercase tracking-wider font-medium"
-          aria-label="Perfil do Instagram da Mindstack (abre numa nova aba)"
+          aria-label={t.footer.instagramAria}
         >
-          Instagram
+          {t.footer.instagram}
         </a>
         <a
           href="https://wa.me/258834577714"
@@ -39,9 +42,9 @@ export default function Footer() {
           rel="noopener noreferrer"
           data-cursor-hover="true"
           className="text-dark/75 hover:text-brand transition-colors duration-200 uppercase tracking-wider font-medium"
-          aria-label="WhatsApp da Mindstack (abre numa nova aba)"
+          aria-label={t.footer.whatsappAria}
         >
-          WhatsApp
+          {t.footer.whatsapp}
         </a>
       </div>
 

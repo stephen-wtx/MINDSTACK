@@ -4,6 +4,7 @@ import React, { useState, useEffect, useRef, useCallback } from "react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import gsap from "gsap";
+import { useLanguage } from "@/context/LanguageContext";
 
 /* ─────────────────────────────────────────────────────────────
    TYPES & DATA DEFINITIONS
@@ -191,6 +192,7 @@ const DESIGN_WORKS: DesignWork[] = [
 type CategoryTab = "tech" | "design";
 
 export default function ProjectsGallery() {
+  const { t } = useLanguage();
   const router = useRouter();
   const [activeTab, setActiveTab] = useState<CategoryTab>("tech");
   const [selectedDesignIndex, setSelectedDesignIndex] = useState<number | null>(null);
@@ -316,7 +318,7 @@ export default function ProjectsGallery() {
             onClick={handleBack}
             data-cursor-hover="true"
             className="group inline-flex items-center gap-2.5 font-body text-xs sm:text-sm font-semibold tracking-widest uppercase text-dark/70 hover:text-brand transition-colors duration-200 py-1.5 focus:outline-none focus-visible:ring-2 focus-visible:ring-brand rounded-sm"
-            aria-label="Voltar para a página anterior"
+            aria-label={t.projectsGallery.backAria}
           >
             <span
               className="inline-block transform transition-transform duration-300 ease-out group-hover:-translate-x-1.5 font-sans text-base sm:text-lg"
@@ -324,7 +326,7 @@ export default function ProjectsGallery() {
             >
               ←
             </span>
-            <span>Voltar</span>
+            <span>{t.projectsGallery.back}</span>
           </button>
         </div>
 
@@ -333,11 +335,11 @@ export default function ProjectsGallery() {
         ─────────────────────────────────────────────────────────────── */}
         <div className="max-w-4xl mb-16 sm:mb-20 lg:mb-24">
           <h1 className="font-display font-black text-brand tracking-tight uppercase text-[clamp(2.75rem,7vw,5.75rem)] leading-none select-none">
-            PROJECTS
+            {t.projectsGallery.title}
           </h1>
           <p className="mt-6 sm:mt-8 font-body text-dark/85 text-xl sm:text-2xl md:text-3xl font-normal leading-snug tracking-tight max-w-xl">
-            Uma selecção dos nossos trabalhos<br />
-            em Design e Tecnologia.
+            {t.projectsGallery.subtitleLine1}<br />
+            {t.projectsGallery.subtitleLine2}
           </p>
         </div>
 
@@ -358,11 +360,11 @@ export default function ProjectsGallery() {
                   ? "text-brand font-bold"
                   : "text-dark/55 hover:text-dark font-medium"
               }`}
-              aria-label="Ver projectos de Tecnologia"
+              aria-label={t.projectsGallery.tabTechAria}
               aria-selected={activeTab === "tech"}
               role="tab"
             >
-              <span>TECH</span>
+              <span>{t.projectsGallery.tabTech}</span>
             </button>
 
             {/* DESIGN BUTTON */}
@@ -376,11 +378,11 @@ export default function ProjectsGallery() {
                   ? "text-brand font-bold"
                   : "text-dark/55 hover:text-dark font-medium"
               }`}
-              aria-label="Ver projectos de Design"
+              aria-label={t.projectsGallery.tabDesignAria}
               aria-selected={activeTab === "design"}
               role="tab"
             >
-              <span>DESIGN</span>
+              <span>{t.projectsGallery.tabDesign}</span>
             </button>
 
             {/* Continuous Animated Underline Indicator */}
@@ -405,13 +407,18 @@ export default function ProjectsGallery() {
             <div className="space-y-24 sm:space-y-36 lg:space-y-44">
               {TECH_PROJECTS.map((project, index) => {
                 const ContentWrapper = project.link ? "a" : "div";
+                const itemTrans = t.projectsGallery.techProjects.find((p) => p.id === project.id);
+                const title = itemTrans?.title || project.title;
+                const category = itemTrans?.category || project.category;
+                const description = itemTrans?.description || project.description;
+
                 const wrapperProps = project.link
                   ? {
                       href: project.link,
                       target: "_blank",
                       rel: "noopener noreferrer",
                       "data-cursor-hover": "true",
-                      "aria-label": `Abrir projecto ${project.title} (nova aba)`,
+                      "aria-label": `${title} (${t.projectsGallery.visitProject})`,
                     }
                   : {};
 
@@ -429,14 +436,14 @@ export default function ProjectsGallery() {
                           </span>
                           <span className="w-1.5 h-1.5 rounded-full bg-dark/20" />
                           <span className="font-body text-xs tracking-wider text-dark-muted uppercase font-medium">
-                            {project.category}
+                            {category}
                           </span>
                         </div>
                         <h2 className="font-display font-black text-2xl sm:text-3xl md:text-4xl text-dark tracking-tight uppercase group-hover:text-brand transition-colors duration-200">
-                          {project.title}
+                          {title}
                         </h2>
                         <p className="mt-2.5 sm:mt-3 font-body text-sm sm:text-base text-dark-muted/90 font-normal leading-relaxed">
-                          {project.description}
+                          {description}
                         </p>
                       </div>
 
@@ -447,7 +454,7 @@ export default function ProjectsGallery() {
                           className="inline-flex items-center gap-2 font-body text-xs sm:text-sm font-semibold tracking-widest uppercase text-brand group-hover:text-brand-deep transition-colors duration-200 py-1"
                         >
                           <span className="relative">
-                            Visitar Projecto
+                            {t.projectsGallery.visitProject}
                             <span className="absolute bottom-0 left-0 w-full h-[1px] bg-brand origin-left scale-x-0 group-hover:scale-100 transition-transform duration-300" />
                           </span>
                           <span
@@ -492,6 +499,9 @@ export default function ProjectsGallery() {
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8 sm:gap-12 lg:gap-16">
               {DESIGN_WORKS.map((work, index) => {
                 const isWide = work.isWide;
+                const itemTrans = t.projectsGallery.designWorks.find((w) => w.id === work.id);
+                const title = itemTrans?.title || work.title;
+                const category = itemTrans?.category || work.category;
 
                 return (
                   <article
@@ -503,7 +513,7 @@ export default function ProjectsGallery() {
                     } focus:outline-none focus-visible:ring-2 focus-visible:ring-brand rounded-2xl`}
                     tabIndex={0}
                     role="button"
-                    aria-label={`Visualizar trabalho ${work.title} em ecrã inteiro`}
+                    aria-label={`${title} (${category})`}
                     onKeyDown={(e) => {
                       if (e.key === "Enter" || e.key === " ") {
                         e.preventDefault();
@@ -517,7 +527,7 @@ export default function ProjectsGallery() {
                     >
                       <Image
                         src={work.image}
-                        alt={`Trabalho gráfico ${work.title}`}
+                        alt={title}
                         fill
                         loading={index < 2 ? "eager" : "lazy"}
                         decoding="async"
@@ -532,7 +542,7 @@ export default function ProjectsGallery() {
                       {/* Minimalist Hover Indicator: + Ampliar */}
                       <div className="absolute inset-0 bg-dark/40 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center p-4">
                         <span className="px-4 py-2 bg-dark/85 backdrop-blur-md rounded-full text-white font-body text-xs sm:text-sm font-medium tracking-widest uppercase transform translate-y-2 group-hover:translate-y-0 transition-transform duration-300">
-                          + Ampliar
+                          {t.projectsGallery.enlargeLabel}
                         </span>
                       </div>
 
@@ -546,10 +556,10 @@ export default function ProjectsGallery() {
                     <div className="mt-4 sm:mt-5 flex items-center justify-between gap-4">
                       <div>
                         <h2 className="font-display font-black text-lg sm:text-xl md:text-2xl text-dark tracking-tight uppercase group-hover:text-brand transition-colors duration-200">
-                          {work.title}
+                          {title}
                         </h2>
                         <span className="font-body text-xs sm:text-sm text-dark-muted font-medium tracking-wider uppercase">
-                          {work.category}
+                          {category}
                         </span>
                       </div>
 
@@ -557,7 +567,7 @@ export default function ProjectsGallery() {
                         className="text-dark/40 group-hover:text-brand text-xs sm:text-sm font-body tracking-wider uppercase font-semibold transition-colors duration-200"
                         aria-hidden="true"
                       >
-                        [ Ver ]
+                        {t.projectsGallery.viewLabel}
                       </span>
                     </div>
                   </article>
@@ -572,130 +582,123 @@ export default function ProjectsGallery() {
 
       {/* ─────────────────────────────────────────────────────────────
           LIGHTBOX / MODAL: MINIMALIST FHD VISUALIZATION
-          Structure:
-          ┌─────────────────────────────────────┐
-          │                              ×      │
-          │                                     │
-          │          IMAGEM COMPLETA            │
-          │                                     │
-          │                                     │
-          └─────────────────────────────────────┘
-          - No card inside modal
-          - No exaggerated shadows, gradients, or extra decoration
-          - object-fit: contain (exact original proportions, no distortion)
-          - Close via ×, click backdrop, or Escape key
-          - Accessible navigation with Left/Right arrows
       ─────────────────────────────────────────────────────────────── */}
-      {activeModalItem && (
-        <div
-          role="dialog"
-          aria-modal="true"
-          aria-label={`Visualização em ecrã inteiro de ${activeModalItem.title}`}
-          className="fixed inset-0 z-[100] bg-black/95 backdrop-blur-md flex flex-col justify-between p-4 sm:p-6 md:p-8 select-none animate-fadeIn"
-          onClick={() => setSelectedDesignIndex(null)}
-        >
-          {/* Top Bar: Title & Close Button (×) */}
+      {activeModalItem && (() => {
+        const activeTrans = t.projectsGallery.designWorks.find((w) => w.id === activeModalItem.id);
+        const modalTitle = activeTrans?.title || activeModalItem.title;
+        const modalCategory = activeTrans?.category || activeModalItem.category;
+
+        return (
           <div
-            className="w-full flex items-center justify-between z-20"
-            onClick={(e) => e.stopPropagation()}
+            role="dialog"
+            aria-modal="true"
+            aria-label={modalTitle}
+            className="fixed inset-0 z-[100] bg-black/95 backdrop-blur-md flex flex-col justify-between p-4 sm:p-6 md:p-8 select-none animate-fadeIn"
+            onClick={() => setSelectedDesignIndex(null)}
           >
-            {/* Work Info */}
-            <div className="flex items-center gap-3 text-white/80">
-              <span className="font-body text-xs font-bold text-brand uppercase tracking-widest">
-                {activeModalItem.number}
-              </span>
-              <span className="w-1.5 h-1.5 rounded-full bg-white/30" />
-              <span className="font-display text-sm sm:text-base font-bold text-white tracking-tight uppercase">
-                {activeModalItem.title}
-              </span>
-              <span className="hidden sm:inline font-body text-xs text-white/50 tracking-wider uppercase">
-                — {activeModalItem.category}
-              </span>
+            {/* Top Bar: Title & Close Button (×) */}
+            <div
+              className="w-full flex items-center justify-between z-20"
+              onClick={(e) => e.stopPropagation()}
+            >
+              {/* Work Info */}
+              <div className="flex items-center gap-3 text-white/80">
+                <span className="font-body text-xs font-bold text-brand uppercase tracking-widest">
+                  {activeModalItem.number}
+                </span>
+                <span className="w-1.5 h-1.5 rounded-full bg-white/30" />
+                <span className="font-display text-sm sm:text-base font-bold text-white tracking-tight uppercase">
+                  {modalTitle}
+                </span>
+                <span className="hidden sm:inline font-body text-xs text-white/50 tracking-wider uppercase">
+                  — {modalCategory}
+                </span>
+              </div>
+
+              {/* Minimalist × Close Button */}
+              <button
+                type="button"
+                onClick={() => setSelectedDesignIndex(null)}
+                data-cursor-hover="true"
+                className="w-11 h-11 flex items-center justify-center text-white/80 hover:text-brand transition-colors duration-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-brand rounded-full text-2xl font-light"
+                aria-label={t.projectsGallery.lightboxCloseAria}
+              >
+                ×
+              </button>
             </div>
 
-            {/* Minimalist × Close Button */}
-            <button
-              type="button"
-              onClick={() => setSelectedDesignIndex(null)}
-              data-cursor-hover="true"
-              className="w-11 h-11 flex items-center justify-center text-white/80 hover:text-brand transition-colors duration-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-brand rounded-full text-2xl font-light"
-              aria-label="Fechar visualização ampliada (Escape)"
+            {/* Central Image: Full Scale with Contain */}
+            <div
+              className="relative flex-1 w-full flex items-center justify-center my-3 sm:my-4 overflow-hidden pointer-events-auto"
+              onClick={(e) => e.stopPropagation()}
             >
-              ×
-            </button>
-          </div>
+              <div className="relative w-full h-full max-w-[92vw] max-h-[82vh] sm:max-w-[88vw] sm:max-h-[86vh] flex items-center justify-center">
+                <Image
+                  src={activeModalItem.image}
+                  alt={modalTitle}
+                  fill
+                  priority
+                  sizes="100vw"
+                  className="object-contain pointer-events-auto"
+                />
+              </div>
 
-          {/* Central Image: Full Scale with Contain */}
-          <div
-            className="relative flex-1 w-full flex items-center justify-center my-3 sm:my-4 overflow-hidden pointer-events-auto"
-            onClick={(e) => e.stopPropagation()}
-          >
-            <div className="relative w-full h-full max-w-[92vw] max-h-[82vh] sm:max-w-[88vw] sm:max-h-[86vh] flex items-center justify-center">
-              <Image
-                src={activeModalItem.image}
-                alt={`Visualização completa de ${activeModalItem.title}`}
-                fill
-                priority
-                sizes="100vw"
-                className="object-contain pointer-events-auto"
-              />
+              {/* Prev Button */}
+              <button
+                type="button"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  setSelectedDesignIndex((prev) =>
+                    prev !== null ? (prev - 1 + DESIGN_WORKS.length) % DESIGN_WORKS.length : null
+                  );
+                }}
+                data-cursor-hover="true"
+                className="absolute left-1 sm:left-4 top-1/2 -translate-y-1/2 w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-black/40 hover:bg-brand text-white flex items-center justify-center transition-all duration-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-brand font-sans text-lg sm:text-xl"
+                aria-label={t.projectsGallery.lightboxPrevAria}
+              >
+                ←
+              </button>
+
+              {/* Next Button */}
+              <button
+                type="button"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  setSelectedDesignIndex((prev) =>
+                    prev !== null ? (prev + 1) % DESIGN_WORKS.length : null
+                  );
+                }}
+                data-cursor-hover="true"
+                className="absolute right-1 sm:right-4 top-1/2 -translate-y-1/2 w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-black/40 hover:bg-brand text-white flex items-center justify-center transition-all duration-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-brand font-sans text-lg sm:text-xl"
+                aria-label={t.projectsGallery.lightboxNextAria}
+              >
+                →
+              </button>
             </div>
 
-            {/* Prev Button */}
-            <button
-              type="button"
-              onClick={(e) => {
-                e.stopPropagation();
-                setSelectedDesignIndex((prev) =>
-                  prev !== null ? (prev - 1 + DESIGN_WORKS.length) % DESIGN_WORKS.length : null
-                );
-              }}
-              data-cursor-hover="true"
-              className="absolute left-1 sm:left-4 top-1/2 -translate-y-1/2 w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-black/40 hover:bg-brand text-white flex items-center justify-center transition-all duration-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-brand font-sans text-lg sm:text-xl"
-              aria-label="Imagem anterior (Seta para a esquerda)"
+            {/* Bottom Bar: Index & Keyboard hint */}
+            <div
+              className="w-full flex items-center justify-between text-xs font-body text-white/50 z-20"
+              onClick={(e) => e.stopPropagation()}
             >
-              ←
-            </button>
-
-            {/* Next Button */}
-            <button
-              type="button"
-              onClick={(e) => {
-                e.stopPropagation();
-                setSelectedDesignIndex((prev) =>
-                  prev !== null ? (prev + 1) % DESIGN_WORKS.length : null
-                );
-              }}
-              data-cursor-hover="true"
-              className="absolute right-1 sm:right-4 top-1/2 -translate-y-1/2 w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-black/40 hover:bg-brand text-white flex items-center justify-center transition-all duration-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-brand font-sans text-lg sm:text-xl"
-              aria-label="Próxima imagem (Seta para a direita)"
-            >
-              →
-            </button>
+              <span>
+                {activeModalItem.number} / {String(DESIGN_WORKS.length).padStart(2, "0")}
+              </span>
+              <span className="hidden sm:inline tracking-wider">
+                {t.projectsGallery.lightboxHint}
+              </span>
+              <button
+                type="button"
+                onClick={() => setSelectedDesignIndex(null)}
+                data-cursor-hover="true"
+                className="text-white/70 hover:text-brand transition-colors uppercase tracking-wider font-semibold"
+              >
+                {t.projectsGallery.lightboxClose}
+              </button>
+            </div>
           </div>
-
-          {/* Bottom Bar: Index & Keyboard hint */}
-          <div
-            className="w-full flex items-center justify-between text-xs font-body text-white/50 z-20"
-            onClick={(e) => e.stopPropagation()}
-          >
-            <span>
-              {activeModalItem.number} / {String(DESIGN_WORKS.length).padStart(2, "0")}
-            </span>
-            <span className="hidden sm:inline tracking-wider">
-              Navegar com setas ← → ou clique fora para fechar
-            </span>
-            <button
-              type="button"
-              onClick={() => setSelectedDesignIndex(null)}
-              data-cursor-hover="true"
-              className="text-white/70 hover:text-brand transition-colors uppercase tracking-wider font-semibold"
-            >
-              Fechar
-            </button>
-          </div>
-        </div>
-      )}
+        );
+      })()}
 
     </section>
   );
