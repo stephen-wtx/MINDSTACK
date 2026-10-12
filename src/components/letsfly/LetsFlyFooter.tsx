@@ -181,10 +181,10 @@ export default function LetsFlyFooter() {
         >
           {/* EMAIL */}
           <a
-            href="mailto:zillionphp777@gmail.com"
+            href="mailto:mindstack258@proton.me"
             data-cursor-hover="true"
             className="group flex flex-col items-start gap-2.5 focus:outline-none focus-visible:ring-2 focus-visible:ring-white rounded-sm"
-            aria-label="Enviar email para zillionphp777@gmail.com"
+            aria-label="Enviar email para mindstack258@proton.me"
           >
             <div className="flex items-center gap-2 font-body text-xs sm:text-sm font-semibold tracking-widest text-white/60 uppercase">
               <Mail className="w-3.5 h-3.5 flex-shrink-0" aria-hidden="true" />
@@ -195,7 +195,7 @@ export default function LetsFlyFooter() {
                 text-base sm:text-lg md:text-xl lg:text-2xl
                 text-white tracking-tight
                 transition-colors duration-200 group-hover:text-brand">
-                zillionphp777@gmail.com
+                mindstack258@proton.me
               </span>
               <span
                 className="inline-block text-white/60 text-base sm:text-lg transform transition-transform duration-300 ease-out group-hover:translate-x-2 group-hover:text-brand"
