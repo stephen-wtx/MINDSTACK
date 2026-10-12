@@ -215,11 +215,12 @@ export default function Navbar({ navRef }: NavbarProps) {
           </span>
         </Link>
 
-        {/* Right: Desktop Navigation with Sliding Indicator + Language Switcher */}
-        <div className="hidden md:flex items-center gap-6 lg:gap-8 xl:gap-10">
+        {/* Right: Desktop Navigation + Language Switcher (All Breakpoints) + Mobile Hamburger */}
+        <div className="flex items-center gap-2.5 sm:gap-3.5 md:gap-6 lg:gap-8 xl:gap-10 z-50">
+          {/* Desktop Navigation with Sliding Indicator */}
           <div
             ref={menuContainerRef}
-            className="relative flex items-center gap-7 lg:gap-9 xl:gap-11"
+            className="hidden md:flex relative items-center gap-7 lg:gap-9 xl:gap-11"
           >
             {menuItems.map((item) => {
               const isActive = activeId === item.id;
@@ -252,37 +253,37 @@ export default function Navbar({ navRef }: NavbarProps) {
             />
           </div>
 
-          {/* Minimalist Separator */}
-          <div className="h-3.5 w-[1px] bg-dark/15" aria-hidden="true" />
+          {/* Minimalist Separator (Desktop only) */}
+          <div className="hidden md:block h-3.5 w-[1px] bg-dark/15" aria-hidden="true" />
 
-          {/* Desktop Language Switcher */}
-          <LanguageSwitcher variant="desktop" />
+          {/* Language Switcher — Always visible directly in the header across all screen sizes */}
+          <LanguageSwitcher />
+
+          {/* Mobile: Minimalist 2-Line Hamburger Button */}
+          <button
+            type="button"
+            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+            className="md:hidden relative flex flex-col items-center justify-center w-10 h-10 sm:w-11 sm:h-11 focus:outline-none focus-visible:ring-2 focus-visible:ring-brand p-2"
+            aria-expanded={mobileMenuOpen}
+            aria-controls="mobile-fullscreen-menu"
+            aria-label={mobileMenuOpen ? t.nav.menuClose : t.nav.menuOpen}
+          >
+            <div className="w-6 h-3 flex flex-col justify-between">
+              {/* Line 1 */}
+              <span
+                className={`w-6 h-[1.5px] bg-dark rounded-full transition-all duration-300 ease-in-out origin-center ${
+                  mobileMenuOpen ? "rotate-45 translate-y-[5.25px]" : ""
+                }`}
+              />
+              {/* Line 2 */}
+              <span
+                className={`w-6 h-[1.5px] bg-dark rounded-full transition-all duration-300 ease-in-out origin-center ${
+                  mobileMenuOpen ? "-rotate-45 -translate-y-[5.25px]" : ""
+                }`}
+              />
+            </div>
+          </button>
         </div>
-
-        {/* Mobile: Minimalist 2-Line Hamburger Button */}
-        <button
-          type="button"
-          onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-          className="md:hidden relative z-50 flex flex-col items-center justify-center w-11 h-11 focus:outline-none focus-visible:ring-2 focus-visible:ring-brand p-2"
-          aria-expanded={mobileMenuOpen}
-          aria-controls="mobile-fullscreen-menu"
-          aria-label={mobileMenuOpen ? t.nav.menuClose : t.nav.menuOpen}
-        >
-          <div className="w-6 h-3 flex flex-col justify-between">
-            {/* Line 1 */}
-            <span
-              className={`w-6 h-[1.5px] bg-dark rounded-full transition-all duration-300 ease-in-out origin-center ${
-                mobileMenuOpen ? "rotate-45 translate-y-[5.25px]" : ""
-              }`}
-            />
-            {/* Line 2 */}
-            <span
-              className={`w-6 h-[1.5px] bg-dark rounded-full transition-all duration-300 ease-in-out origin-center ${
-                mobileMenuOpen ? "-rotate-45 -translate-y-[5.25px]" : ""
-              }`}
-            />
-          </div>
-        </button>
       </nav>
 
       {/* Mobile Fullscreen Navigation Overlay */}
@@ -326,31 +327,19 @@ export default function Navbar({ navRef }: NavbarProps) {
           })}
         </div>
 
-        {/* Mobile Menu Footer: Language Switcher + Brand Note */}
+        {/* Mobile Menu Footer Note */}
         <div
-          className={`pt-6 border-t border-dark/10 flex flex-col sm:flex-row sm:items-center justify-between gap-4 transition-all duration-300 ${
+          className={`pt-6 border-t border-dark/10 flex items-center justify-between transition-all duration-300 ${
             mobileMenuOpen ? "opacity-100" : "opacity-0"
           }`}
           style={{ transitionDelay: mobileMenuOpen ? "350ms" : "0ms" }}
         >
-          <div className="flex items-center gap-3">
-            <span className="font-body text-xs text-dark-muted tracking-wider uppercase">
-              {t.languageSwitcher.label}:
-            </span>
-            <LanguageSwitcher
-              variant="mobile"
-              onSelect={() => setMobileMenuOpen(false)}
-            />
-          </div>
-
-          <div className="flex items-center justify-between sm:justify-end gap-3 text-dark-muted">
-            <span className="font-body text-xs tracking-wider uppercase">
-              {t.nav.mobileSubline}
-            </span>
-            <span className="font-body text-xs text-brand font-medium">
-              2026
-            </span>
-          </div>
+          <span className="font-body text-xs text-dark-muted tracking-wider uppercase">
+            {t.nav.mobileSubline}
+          </span>
+          <span className="font-body text-xs text-brand font-medium">
+            2026
+          </span>
         </div>
       </div>
     </header>

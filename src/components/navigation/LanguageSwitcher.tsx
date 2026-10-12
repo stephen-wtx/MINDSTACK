@@ -82,13 +82,11 @@ const LANGUAGES: LanguageOption[] = [
 
 interface LanguageSwitcherProps {
   className?: string;
-  variant?: "desktop" | "mobile";
   onSelect?: () => void;
 }
 
 export default function LanguageSwitcher({
   className = "",
-  variant = "desktop",
   onSelect,
 }: LanguageSwitcherProps) {
   const { language, setLanguage, t } = useLanguage();
@@ -151,19 +149,15 @@ export default function LanguageSwitcher({
         aria-expanded={isOpen}
         aria-label={`${t.languageSwitcher.label}: ${currentOption.fullLabel}. ${t.languageSwitcher.selectLanguage}`}
         data-cursor-hover="true"
-        className={`group flex items-center gap-2 py-1.5 px-2.5 rounded-full transition-all duration-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-brand ${
-          variant === "mobile"
-            ? "bg-dark/5 border border-dark/10 hover:border-dark/20 text-dark"
-            : "hover:bg-dark/[0.04] text-dark/85 hover:text-dark"
-        }`}
+        className="group flex items-center gap-1.5 sm:gap-2 py-1 sm:py-1.5 px-2 sm:px-2.5 rounded-full transition-all duration-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-brand hover:bg-dark/[0.04] text-dark/85 hover:text-dark select-none"
       >
-        <CurrentFlag className="w-[18px] h-[12px]" />
+        <CurrentFlag className="w-[17px] h-[11.5px] sm:w-[18px] sm:h-[12px]" />
         <span className="font-body text-xs font-semibold tracking-wider text-dark group-hover:text-brand transition-colors duration-200">
           {currentOption.shortLabel}
         </span>
         {/* Subtle chevron indicator */}
         <svg
-          className={`w-3 h-3 text-dark/45 group-hover:text-brand transition-transform duration-200 ${
+          className={`w-2.5 h-2.5 sm:w-3 sm:h-3 text-dark/45 group-hover:text-brand transition-transform duration-200 ${
             isOpen ? "rotate-180" : "rotate-0"
           }`}
           viewBox="0 0 12 12"
@@ -182,9 +176,7 @@ export default function LanguageSwitcher({
       <div
         role="listbox"
         aria-label={t.languageSwitcher.selectLanguage}
-        className={`absolute z-[60] mt-2 min-w-[148px] bg-background-soft rounded-xl border border-dark/10 shadow-[0_6px_24px_rgba(0,0,0,0.08)] py-1.5 focus:outline-none transition-all duration-200 origin-top ${
-          variant === "mobile" ? "left-0" : "right-0"
-        } ${
+        className={`absolute z-[60] mt-2 right-0 min-w-[144px] sm:min-w-[150px] bg-background-soft rounded-xl border border-dark/10 shadow-[0_6px_24px_rgba(0,0,0,0.08)] py-1.5 focus:outline-none transition-all duration-200 origin-top-right ${
           isOpen
             ? "opacity-100 translate-y-0 pointer-events-auto scale-100"
             : "opacity-0 -translate-y-2 pointer-events-none scale-95"
